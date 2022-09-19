@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres:
+    restart: unless-stopped
+    container_name: 'takeloot-postgres'
+    image: 'postgres:11'
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data/'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: takeloot
+
+volumes:
+  pgdata: {}
