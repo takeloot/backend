@@ -1,0 +1,33 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Profile {
+  id: String!
+  name: String
+  avatar: String
+  provider: String!
+}
+
+type User {
+  id: String!
+  name: String
+  avatar: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  profiles: [Profile!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  user(id: ID): User
+  me: User!
+}
+
+type Mutation {
+  logout: Boolean!
+}

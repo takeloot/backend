@@ -37,6 +37,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.3.1",
     "apollo-server-express": "^3.10.2",
+    "class-validator": "^0.13.2",
     "graphql": "^16.6.0",
     "passport": "^0.6.0",
     "passport-steam": "^1.0.17",
