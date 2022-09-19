@@ -13,6 +13,19 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: takeloot
+  api:
+    container_name: 'takeloot-api'
+    image: node:lts
+    command: yarn start:debug
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - .:/srv/api:rw
+    working_dir: /srv/api
+    env_file:
+      - .env.development
+    depends_on:
+      - postgres
 
 volumes:
   pgdata: {}
