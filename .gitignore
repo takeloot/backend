@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # Visual Studio Code
 .vscode
+
+.env.development
+.env.staging
+.env.production
