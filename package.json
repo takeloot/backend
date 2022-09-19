@@ -22,12 +22,15 @@
     "prepare": "husky install",
     "commit": "cz",
     "commit:signed": "cz -S",
-    "upgrade": "yarn upgrade-interactive --latest"
+    "upgrade": "yarn upgrade-interactive --latest",
+    "migrate:dev": "dotenv -e .env.development prisma format && dotenv -e .env.development prisma migrate dev && dotenv -e .env.development prisma generate",
+    "migrate:staging": "dotenv -e .env.staging prisma format && dotenv -e .env.staging prisma migrate dev && dotenv -e .env.staging prisma generate"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@prisma/client": "^4.3.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -52,6 +55,7 @@
     "husky": "^8.0.1",
     "jest": "28.1.3",
     "prettier": "^2.3.2",
+    "prisma": "^4.3.1",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
     "ts-jest": "28.0.8",
