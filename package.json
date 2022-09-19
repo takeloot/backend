@@ -24,13 +24,22 @@
     "commit:signed": "cz -S",
     "upgrade": "yarn upgrade-interactive --latest",
     "migrate:dev": "dotenv -e .env.development prisma format && dotenv -e .env.development prisma migrate dev && dotenv -e .env.development prisma generate",
-    "migrate:staging": "dotenv -e .env.staging prisma format && dotenv -e .env.staging prisma migrate dev && dotenv -e .env.staging prisma generate"
+    "migrate:staging": "dotenv -e .env.staging prisma format && dotenv -e .env.staging prisma migrate dev && dotenv -e .env.staging prisma generate",
+    "buildx": "sh ./buildx.sh"
   },
   "dependencies": {
+    "@nestjs/apollo": "^10.1.0",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/graphql": "^10.1.2",
+    "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.3.1",
+    "apollo-server-express": "^3.10.2",
+    "graphql": "^16.6.0",
+    "passport": "^0.6.0",
+    "passport-steam": "^1.0.17",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -44,6 +53,7 @@
     "@types/express": "^4.17.13",
     "@types/jest": "28.1.8",
     "@types/node": "^16.0.0",
+    "@types/passport-steam": "^1.0.1",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
