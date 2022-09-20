@@ -1,8 +1,8 @@
 import { Args, Context, ID, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthGuard } from 'src/auth/guards';
 import { User } from './models/user.model';
+import { PrismaService } from '../prisma/prisma.service';
+import { AuthGuard } from '../auth/guards';
 
 @Resolver(() => User)
 export class UserResolver {

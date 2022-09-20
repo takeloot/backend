@@ -2,11 +2,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { AuthService } from './modules/auth/auth.service';
 import { config } from './config';
-import { PrismaModule } from './prisma/prisma.module';
-import { UserModule } from './user/user.module';
+import { PrismaModule } from './modules/prisma/prisma.module';
+import { UserModule } from './modules/user/user.module';
 import { join } from 'path';
 
 @Module({
