@@ -2,6 +2,9 @@ import { registerAs } from '@nestjs/config';
 import { nanoid } from 'nanoid';
 
 export const config = [
+  registerAs('auth', () => ({
+    sessionSecret: process.env.SESSION_SECRET,
+  })),
   registerAs('authSteam', () => ({
     returnURL: `${process.env.API_URL}authend/steam`,
     realm: process.env.API_URL,
