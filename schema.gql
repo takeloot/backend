@@ -30,4 +30,5 @@ type Query {
 
 type Mutation {
   logout: Boolean!
+  updateConnectionStatus: Boolean!
 }
