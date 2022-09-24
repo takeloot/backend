@@ -15,7 +15,7 @@ RUN yarn prisma generate
 COPY . .
 
 FROM prisma as release
-ENV PORT=3000ß
+ENV PORT=3000
 EXPOSE ${PORT}
 
 CMD node ./main.js
