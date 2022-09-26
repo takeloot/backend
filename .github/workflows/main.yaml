@@ -62,3 +62,14 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/takeloot-api:latest
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/takeloot-api:latest
           cache-to: type=inline
+
+      - name: Rancher Deploy
+        uses: yantadeu/rancher-deploy-action@v0.0.3
+        env:
+          RANCHER_ACCESS_KEY: ${{ secrets.RANCHER_ACCESS_KEY }}
+          RANCHER_SECRET_KEY: ${{ secrets.RANCHER_SECRET_KEY }}
+          RANCHER_URL_API: ${{ secrets.RANCHER_SECRET_KEY }}
+          SERVICE_NAME: ${{ secrets.RANCHER_SERVICE_NAME }}
+          DOCKER_IMAGE: ${{ secrets.RANCHER_DOCKER_IMAGE }}
+          DOCKER_IMAGE_LATEST: ${{ secrets.RANCHER_DOCKER_IMAGE_LATEST }}
+
