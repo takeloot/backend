@@ -20,7 +20,12 @@ async function bootstrap() {
   app.use(
     session({
       store: new RedisStore({
-        client: new Redis(config.get('db.redisUrl')),
+        client: new Redis({
+          host: config.get('db.redisHost'),
+          port: config.get('db.redisPort'),
+          maxRetriesPerRequest: null,
+          enableReadyCheck: false,
+        }),
       }),
       secret: config.get('auth.sessionSecret'),
       name: 'appsessions',

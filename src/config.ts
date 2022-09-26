@@ -16,6 +16,7 @@ export const config = [
     baseURL: process.env.BASE_URL,
   })),
   registerAs('db', () => ({
-    redisUrl: process.env.REDIS_URL,
+    redisHost: process.env.REDIS_HOST,
+    redisPort: process.env.REDIS_PORT,
   })),
 ];
