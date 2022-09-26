@@ -3,7 +3,7 @@ version: '3'
 services:
   postgres:
     restart: unless-stopped
-    container_name: 'takeloot-postgres'
+    container_name: 'postgres'
     image: 'postgres:11'
     ports:
       - '127.0.0.1:5432:5432'
@@ -14,14 +14,14 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: takeloot
   redis:
-    container_name: 'takeloot-redis'
+    container_name: 'redis'
     image: 'redis'
     ports:
       - '127.0.0.1:6379:6379'
     volumes:
       - 'redisdata:/data'
   api:
-    container_name: 'takeloot-api'
+    container_name: 'api'
     image: node:lts
     command: yarn start:debug
     ports:

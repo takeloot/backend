@@ -23,8 +23,19 @@ async function bootstrap() {
         client: new Redis({
           host: config.get('db.redisHost'),
           port: config.get('db.redisPort'),
+          autoResubscribe: true,
+          enableOfflineQueue: true,
+          retryStrategy: () => {
+            return 2000;
+          },
+          lazyConnect: true,
+          enableAutoPipelining: true,
+          connectTimeout: 5000,
           maxRetriesPerRequest: null,
           enableReadyCheck: false,
+          reconnectOnError: (err) => {
+            return err.message.startsWith('READONLY');
+          },
         }),
       }),
       secret: config.get('auth.sessionSecret'),
