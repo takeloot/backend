@@ -4,7 +4,6 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService) {}
-
   async createToken(userId: string) {
     const tokenData = await this.prisma.token.create({
       data: { userId },

@@ -25,6 +25,7 @@
     "udeps": "yarn upgrade-interactive --latest",
     "migrate:dev": "dotenv -e .env.development prisma format && dotenv -e .env.development prisma migrate dev && dotenv -e .env.development prisma generate",
     "migrate:staging": "dotenv -e .env.staging prisma format && dotenv -e .env.staging prisma migrate dev && dotenv -e .env.staging prisma generate",
+    "studio:dev": "dotenv -e .env.development prisma studio",
     "buildx": "sh ./buildx.sh"
   },
   "dependencies": {
@@ -51,7 +52,8 @@
     "redis": "^4.3.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "steamcommunity": "^3.44.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
@@ -67,6 +69,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^18.7.20",
     "@types/passport-steam": "^1.0.1",
+    "@types/steamcommunity": "^3.43.2",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",

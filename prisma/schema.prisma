@@ -39,17 +39,41 @@ model User {
   profiles   Profile[]
   tokens     Token[]
   connection Connection[]
+  inventory  Inventory[]
 }
 
 model Profile {
   id           String  @id @default(cuid())
   provider     String
-  serviceId    String
+  serviceId    String  @unique
   name         String?
   avatar       String?
-  email        String?
+  email        String? @unique
   accessToken  String?
   refreshToken String?
   user         User    @relation(fields: [userId], references: [id])
   userId       String
+}
+
+model Skin {
+  id          String     @id @default(cuid())
+  appId       Int
+  assetId     String
+  name        String?
+  inspect     String?
+  float       String?
+  steamId     String     @unique
+  steamImg    String
+  steamName   String
+  inventory   Inventory? @relation(fields: [inventoryId], references: [id])
+  inventoryId String?
+}
+
+model Inventory {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  skins     Skin[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
 }

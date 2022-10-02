@@ -12,6 +12,7 @@ import { BullModule } from '@nestjs/bull';
 import { ConnectionModule } from './modules/connection/connection.module';
 import { ConnectionService } from './modules/connection/connection.service';
 import { nanoid } from 'nanoid';
+import { InventoryModule } from './modules/inventory/inventory.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { nanoid } from 'nanoid';
     AuthModule,
     PrismaModule,
     UserModule,
+    InventoryModule,
   ],
 })
 export class AppModule {}

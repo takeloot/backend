@@ -23,7 +23,7 @@ services:
   api:
     container_name: 'api'
     image: node:lts
-    command: yarn start:debug
+    command: yarn start:dev
     ports:
       - '127.0.0.1:3000:3000'
     volumes:

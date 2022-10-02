@@ -19,7 +19,7 @@ export class UserResolver {
       id = userId;
     }
 
-    return this.prisma.user.findFirst({
+    return await this.prisma.user.findFirst({
       where: { id },
       include: { profiles: true },
     });
@@ -27,8 +27,8 @@ export class UserResolver {
 
   @UseGuards(AuthGuard)
   @Query(() => User)
-  me(@Context('userId') userId): Promise<User> {
-    return this.prisma.user.findFirst({
+  async me(@Context('userId') userId): Promise<User> {
+    return await this.prisma.user.findFirst({
       where: { id: userId },
       include: { profiles: true },
     });

@@ -23,9 +23,25 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Skin {
+  id: String!
+  steamId: String!
+  steamName: String!
+  steamImg: String!
+}
+
+type Inventory {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  skins: [Skin!]
+}
+
 type Query {
   user(id: ID): User
   me: User!
+  userInventory(appId: Int!, userId: ID!): Inventory
+  myInventory(appId: Int!): Inventory
 }
 
 type Mutation {
