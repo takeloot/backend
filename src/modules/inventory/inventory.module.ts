@@ -1,3 +1,4 @@
+import { InventoryProcessor } from './inventory.processor';
 import { InventoryService } from './inventory.service';
 import { Module } from '@nestjs/common';
 import { InventoryResolver } from './inventory.resolver';
@@ -5,6 +6,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from '../auth/auth.module';
 import { MinioModule } from 'nestjs-minio-client';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -23,11 +25,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
+    BullModule.registerQueue({
+      name: 'inventory-images-queue',
+    }),
     PrismaModule,
     AuthModule,
   ],
   controllers: [],
-  providers: [InventoryResolver, InventoryService],
+  providers: [InventoryResolver, InventoryService, InventoryProcessor],
   exports: [InventoryService],
 })
 export class InventoryModule {}

@@ -3,7 +3,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import SteamCommunity from 'steamcommunity';
 import { Inventory } from './models/inventory.model';
 import { MinioService } from 'nestjs-minio-client';
-import axios from 'axios';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 const community = new SteamCommunity();
 const steamImageUrl = 'https://steamcommunity-a.akamaihd.net/economy/image/';
@@ -13,17 +14,28 @@ export class InventoryService {
   constructor(
     private prisma: PrismaService,
     private readonly minioService: MinioService,
+    @InjectQueue('inventory-images-queue')
+    private readonly inventoryQueue: Queue,
   ) {}
 
-  // TODO: WIP, WILL BE MOVED TO CRON
-  // async putObject({ name, buffer }) {
-  //   return this.minioService.client.putObject('steam', `${name}.png`, buffer);
-  // }
+  async uploadImageToBucket({ name, buffer }) {
+    return await this.minioService.client.putObject(
+      'steam',
+      `${name}.png`,
+      buffer,
+    );
+  }
 
-  // TODO: WIP, WILL BE MOVED TO CRON
-  // async getObject({ name }) {
-  //   return this.minioService.client.getObject('steam', name);
-  // }
+  async updateSkinImage({ skinId, skinImgUrl }) {
+    return await this.prisma.skin.update({
+      where: {
+        id: skinId,
+      },
+      data: {
+        img: skinImgUrl,
+      },
+    });
+  }
 
   async createInventory({ userId }) {
     return await this.prisma.inventory.upsert({
@@ -56,7 +68,7 @@ export class InventoryService {
           for (let i = 0; i < steamInventory.length; i++) {
             const steamSkin = steamInventory[i];
 
-            const steamImgUrl = `${steamImageUrl}${steamSkin.icon_url_large}`;
+            const skinImageUrl = `${steamImageUrl}${steamSkin.icon_url_large}`;
 
             await this.prisma.skin.upsert({
               where: {
@@ -67,7 +79,7 @@ export class InventoryService {
                 appId,
                 assetId: steamSkin.assetid || null,
                 steamId: steamSkin.id,
-                steamImg: steamImgUrl,
+                steamImg: skinImageUrl,
                 steamName: steamSkin.market_name,
                 inventory: {
                   connect: {
@@ -77,25 +89,10 @@ export class InventoryService {
               },
             });
 
-            // TODO: WIP, WILL BE MOVED TO CRON
-            // const response = await axios.get(steamImgUrl, {
-            //   responseType: 'arraybuffer',
-            // });
-
-            // const buffer = Buffer.from(response.data, 'utf-8');
-
-            // const saveImage = await this.putObject({
-            //   name: `${steamSkin.id}-${steamSkin.assetid}`,
-            //   buffer,
-            // });
-
-            // console.log({ saveImage });
-
-            // const getImage = await this.getObject({
-            //   name: `${steamSkin.id}-${steamSkin.assetid}.png`,
-            // });
-
-            // console.log({ getImage });
+            await this.inventoryQueue.add('upload', {
+              name: `${steamSkin.id}-${steamSkin.assetid}`,
+              url: skinImageUrl,
+            });
           }
         },
       );
