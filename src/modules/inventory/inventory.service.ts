@@ -1,14 +1,29 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import * as SteamCommunity from 'steamcommunity';
+import SteamCommunity from 'steamcommunity';
 import { Inventory } from './models/inventory.model';
+import { MinioService } from 'nestjs-minio-client';
+import axios from 'axios';
 
 const community = new SteamCommunity();
 const steamImageUrl = 'https://steamcommunity-a.akamaihd.net/economy/image/';
 
 @Injectable()
 export class InventoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly minioService: MinioService,
+  ) {}
+
+  // TODO: WIP, WILL BE MOVED TO CRON
+  // async putObject({ name, buffer }) {
+  //   return this.minioService.client.putObject('steam', `${name}.png`, buffer);
+  // }
+
+  // TODO: WIP, WILL BE MOVED TO CRON
+  // async getObject({ name }) {
+  //   return this.minioService.client.getObject('steam', name);
+  // }
 
   async createInventory({ userId }) {
     return await this.prisma.inventory.upsert({
@@ -40,6 +55,9 @@ export class InventoryService {
         async (e, steamInventory) => {
           for (let i = 0; i < steamInventory.length; i++) {
             const steamSkin = steamInventory[i];
+
+            const steamImgUrl = `${steamImageUrl}${steamSkin.icon_url_large}`;
+
             await this.prisma.skin.upsert({
               where: {
                 steamId: steamSkin.id,
@@ -49,7 +67,7 @@ export class InventoryService {
                 appId,
                 assetId: steamSkin.assetid || null,
                 steamId: steamSkin.id,
-                steamImg: `${steamImageUrl}${steamSkin.icon_url_large}`,
+                steamImg: steamImgUrl,
                 steamName: steamSkin.market_name,
                 inventory: {
                   connect: {
@@ -58,6 +76,26 @@ export class InventoryService {
                 },
               },
             });
+
+            // TODO: WIP, WILL BE MOVED TO CRON
+            // const response = await axios.get(steamImgUrl, {
+            //   responseType: 'arraybuffer',
+            // });
+
+            // const buffer = Buffer.from(response.data, 'utf-8');
+
+            // const saveImage = await this.putObject({
+            //   name: `${steamSkin.id}-${steamSkin.assetid}`,
+            //   buffer,
+            // });
+
+            // console.log({ saveImage });
+
+            // const getImage = await this.getObject({
+            //   name: `${steamSkin.id}-${steamSkin.assetid}.png`,
+            // });
+
+            // console.log({ getImage });
           }
         },
       );

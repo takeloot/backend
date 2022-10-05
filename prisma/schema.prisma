@@ -56,17 +56,23 @@ model Profile {
 }
 
 model Skin {
-  id          String     @id @default(cuid())
-  appId       Int
-  assetId     String
-  name        String?
-  inspect     String?
-  float       String?
-  steamId     String     @unique
-  steamImg    String
-  steamName   String
-  inventory   Inventory? @relation(fields: [inventoryId], references: [id])
-  inventoryId String?
+  id            String     @id @default(cuid())
+  appId         Int
+  assetId       String
+  steamId       String     @unique
+  steamImg      String
+  steamName     String
+  name          String?
+  img           String?
+  preview       String?
+  screenshot    String?
+  inspect       String?
+  float         String?
+  fullName      String?
+  hasScreenshot Boolean    @default(false)
+  isStatTrak    Boolean    @default(false)
+  inventory     Inventory? @relation(fields: [inventoryId], references: [id])
+  inventoryId   String?
 }
 
 model Inventory {
