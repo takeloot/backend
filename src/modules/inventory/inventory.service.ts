@@ -1,14 +1,41 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import * as SteamCommunity from 'steamcommunity';
+import SteamCommunity from 'steamcommunity';
 import { Inventory } from './models/inventory.model';
+import { MinioService } from 'nestjs-minio-client';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 const community = new SteamCommunity();
 const steamImageUrl = 'https://steamcommunity-a.akamaihd.net/economy/image/';
 
 @Injectable()
 export class InventoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly minioService: MinioService,
+    @InjectQueue('inventory-images-queue')
+    private readonly inventoryQueue: Queue,
+  ) {}
+
+  async uploadImageToBucket({ name, buffer }) {
+    return await this.minioService.client.putObject(
+      'steam',
+      `${name}.png`,
+      buffer,
+    );
+  }
+
+  async updateSkinImage({ skinId, skinImgUrl }) {
+    return await this.prisma.skin.update({
+      where: {
+        id: skinId,
+      },
+      data: {
+        img: skinImgUrl,
+      },
+    });
+  }
 
   async createInventory({ userId }) {
     return await this.prisma.inventory.upsert({
@@ -40,6 +67,9 @@ export class InventoryService {
         async (e, steamInventory) => {
           for (let i = 0; i < steamInventory.length; i++) {
             const steamSkin = steamInventory[i];
+
+            const skinImageUrl = `${steamImageUrl}${steamSkin.icon_url_large}`;
+
             await this.prisma.skin.upsert({
               where: {
                 steamId: steamSkin.id,
@@ -49,7 +79,7 @@ export class InventoryService {
                 appId,
                 assetId: steamSkin.assetid || null,
                 steamId: steamSkin.id,
-                steamImg: `${steamImageUrl}${steamSkin.icon_url_large}`,
+                steamImg: skinImageUrl,
                 steamName: steamSkin.market_name,
                 inventory: {
                   connect: {
@@ -57,6 +87,11 @@ export class InventoryService {
                   },
                 },
               },
+            });
+
+            await this.inventoryQueue.add('upload', {
+              name: `${steamSkin.id}-${steamSkin.assetid}`,
+              url: skinImageUrl,
             });
           }
         },

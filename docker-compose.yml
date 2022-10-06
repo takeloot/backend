@@ -20,21 +20,35 @@ services:
       - '127.0.0.1:6379:6379'
     volumes:
       - 'redisdata:/data'
-  api:
-    container_name: 'api'
-    image: node:lts
-    command: yarn start:dev
+
+  minio:
+    container_name: 'minio'
+    image: 'bitnami/minio'
     ports:
-      - '127.0.0.1:3000:3000'
+      - '127.0.0.1:9000:9000'
+      - '127.0.0.1:9001:9001'
     volumes:
-      - .:/srv/api:rw
-    working_dir: /srv/api
-    env_file:
-      - .env.development
-    depends_on:
-      - postgres
-      - redis
+      - 'miniodata:/data'
+    environment:
+      MINIO_ROOT_USER: minio-root-user
+      MINIO_ROOT_PASSWORD: minio-root-password
+
+  # api:
+  #   container_name: 'api'
+  #   image: node:lts
+  #   command: yarn start:dev
+  #   ports:
+  #     - '127.0.0.1:3000:3000'
+  #   volumes:
+  #     - .:/srv/api:rw
+  #   working_dir: /srv/api
+  #   env_file:
+  #     - .env.development
+  #   depends_on:
+  #     - postgres
+  #     - redis
 
 volumes:
   pgdata: {}
   redisdata: {}
+  miniodata: {}

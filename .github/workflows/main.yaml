@@ -59,3 +59,13 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/takeloot-api:latest
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}/takeloot-api:latest
           cache-to: type=inline
+      
+      - name: Update rancher deployment
+        uses: th0th/rancher-redeploy-workload@v0.9
+        env:
+          RANCHER_BEARER_TOKEN: ${{ secrets.RANCHER_BEARER_TOKEN }}
+          RANCHER_CLUSTER_ID: 'c-l7qcs'
+          RANCHER_NAMESPACE: 'default'
+          RANCHER_PROJECT_ID: 'p-pg7wp'
+          RANCHER_URL: 'https://rancher.takeloot.ru'
+          RANCHER_WORKLOADS: 'takeloot-dev-api'

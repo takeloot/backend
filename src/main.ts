@@ -2,8 +2,8 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-import * as session from 'express-session';
-import * as connectRedis from 'connect-redis';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
 import Redis from 'ioredis';
 
 async function bootstrap() {
