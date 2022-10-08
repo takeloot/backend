@@ -1,6 +1,29 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
+export class Case {
+  @Field()
+  id: string;
+
+  @Field()
+  img: string;
+
+  @Field()
+  name: string;
+}
+
+@ObjectType()
+export class Collection {
+  @Field()
+  id: string;
+
+  @Field()
+  img: string;
+
+  @Field()
+  name: string;
+}
+@ObjectType()
 export class Skin {
   @Field()
   id: string;
@@ -12,31 +35,73 @@ export class Skin {
   assetId: string;
 
   @Field({ nullable: true })
-  name: string;
+  name?: string;
 
   @Field({ nullable: true })
-  img: string;
+  img?: string;
 
   @Field({ nullable: true })
-  preview: string;
+  preview?: string;
 
   @Field({ nullable: true })
-  screenshot: string;
+  screenshot?: string;
 
   @Field({ nullable: true })
-  inspect: string;
+  inspect?: string;
 
   @Field({ nullable: true })
-  float: string;
+  float?: string;
+
+  @Field()
+  floatRange: number[];
 
   @Field({ nullable: true })
-  fullName: string;
+  pattern?: number;
+
+  @Field({ nullable: true })
+  quality?: string;
+
+  @Field({ nullable: true })
+  rarity?: string;
+
+  @Field({ nullable: true })
+  botPrice?: number;
+
+  @Field({ nullable: true })
+  defaultPrice?: number;
+
+  @Field({ nullable: true })
+  lowestPrice?: number;
+
+  @Field({ nullable: true })
+  price?: number;
+
+  @Field({ nullable: true })
+  overstockDiff?: number;
+
+  @Field({ nullable: true })
+  hasHighDemand?: boolean;
+
+  @Field({ nullable: true })
+  isUnsellable?: boolean;
+
+  @Field({ nullable: true })
+  model3d?: string;
+
+  @Field(() => [Collection], { nullable: true })
+  collection?: Collection[];
+
+  @Field(() => [Case], { nullable: true })
+  case?: Case[];
+
+  @Field({ nullable: true })
+  fullName?: string;
 
   @Field({ defaultValue: false })
-  hasScreenshot: boolean;
+  hasScreenshot?: boolean;
 
   @Field({ nullable: true })
-  isStatTrak: boolean;
+  isStatTrak?: boolean;
 
   @Field()
   steamId: string;
