@@ -1,19 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-
-@ObjectType()
-export class Skin {
-  @Field()
-  id: string;
-
-  @Field()
-  steamId: string;
-
-  @Field()
-  steamName: string;
-
-  @Field()
-  steamImg: string;
-}
+import { Skin } from './skin.model';
 
 @ObjectType()
 export class Inventory {

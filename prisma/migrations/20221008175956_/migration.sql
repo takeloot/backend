@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Skin" ALTER COLUMN "isStatTrak" DROP NOT NULL,
+ALTER COLUMN "isStatTrak" DROP DEFAULT;

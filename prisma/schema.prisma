@@ -70,7 +70,7 @@ model Skin {
   float         String?
   fullName      String?
   hasScreenshot Boolean    @default(false)
-  isStatTrak    Boolean    @default(false)
+  isStatTrak    Boolean?
   inventory     Inventory? @relation(fields: [inventoryId], references: [id])
   inventoryId   String?
 }

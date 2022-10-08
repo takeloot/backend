@@ -25,6 +25,17 @@ scalar DateTime
 
 type Skin {
   id: String!
+  appId: Float!
+  assetId: String!
+  name: String
+  img: String
+  preview: String
+  screenshot: String
+  inspect: String
+  float: String
+  fullName: String
+  hasScreenshot: Boolean!
+  isStatTrak: Boolean
   steamId: String!
   steamName: String!
   steamImg: String!

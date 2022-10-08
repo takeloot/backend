@@ -31,7 +31,7 @@ export class InventoryResolver {
   //   });
   // }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Query(() => Inventory, { nullable: true })
   // inventoryType=allSkins
   // limit=60
