@@ -79,15 +79,15 @@ export class InventoryService {
 
             console.log({ skin });
 
-            try {
-              await this.inventoryQueue.add('upload', {
-                name: `${steamSkin.id}-${steamSkin.assetid}`,
-                url: steamSkinImageURL,
-                skinId: skin.id,
-              });
-            } catch (e) {
-              console.log({ e });
-            }
+            // try {
+            //   await this.inventoryQueue.add('upload', {
+            //     name: `${steamSkin.id}-${steamSkin.assetid}`,
+            //     url: steamSkinImageURL,
+            //     skinId: skin.id,
+            //   });
+            // } catch (e) {
+            //   console.log({ e });
+            // }
           }
         },
       );
