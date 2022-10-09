@@ -69,8 +69,9 @@ model Skin {
   hasScreenshot Boolean      @default(false)
   screenshot    String?
   inspect       String?
-  float         String?
-  floatRange    Int[]
+  float         Int?
+  floatMin      Int?
+  floatMax      Int?
   pattern       Int?
   quality       String?
   rarity        String?

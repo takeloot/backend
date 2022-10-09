@@ -7,7 +7,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 
 const community = new SteamCommunity();
-const steamImageUrl = 'https://steamcommunity-a.akamaihd.net/economy/image/';
+const steamImageURL = 'https://steamcommunity-a.akamaihd.net/economy/image/';
 
 @Injectable()
 export class InventoryService {
@@ -26,25 +26,13 @@ export class InventoryService {
     );
   }
 
-  async updateSkinImage({ skinId, skinImgUrl }) {
+  async updateSkinImage({ skinId, skinImgURL }) {
     return await this.prisma.skin.update({
       where: {
         id: skinId,
       },
       data: {
-        img: skinImgUrl,
-      },
-    });
-  }
-
-  async createInventory({ userId }) {
-    return await this.prisma.inventory.upsert({
-      where: {
-        userId,
-      },
-      update: {},
-      create: {
-        userId,
+        img: skinImgURL,
       },
     });
   }
@@ -68,9 +56,9 @@ export class InventoryService {
           for (let i = 0; i < steamInventory.length; i++) {
             const steamSkin = steamInventory[i];
 
-            const skinImageUrl = `${steamImageUrl}${steamSkin.icon_url_large}`;
+            const steamSkinImageURL = `${steamImageURL}${steamSkin.icon_url_large}`;
 
-            await this.prisma.skin.upsert({
+            const skin = await this.prisma.skin.upsert({
               where: {
                 steamId: steamSkin.id,
               },
@@ -79,7 +67,7 @@ export class InventoryService {
                 appId,
                 assetId: steamSkin.assetid || null,
                 steamId: steamSkin.id,
-                steamImg: skinImageUrl,
+                steamImg: steamSkinImageURL,
                 steamName: steamSkin.market_name,
                 inventory: {
                   connect: {
@@ -91,7 +79,8 @@ export class InventoryService {
 
             await this.inventoryQueue.add('upload', {
               name: `${steamSkin.id}-${steamSkin.assetid}`,
-              url: skinImageUrl,
+              url: steamSkinImageURL,
+              skinId: skin.id,
             });
           }
         },
@@ -115,6 +104,7 @@ export class InventoryService {
     return inventoryLastUpdatedMs > refetchLimitMs;
   }
 
+  // TODO: Fix getting inventory from first query
   async getUserInventory({ appId, userId }) {
     const userProfile = await this.prisma.profile.findFirst({
       where: { userId },
@@ -157,14 +147,19 @@ export class InventoryService {
         data: {
           updatedAt: new Date().toISOString(),
         },
+        include: {
+          skins: true,
+        },
       });
     }
 
-    return await this.prisma.inventory.findFirst({
+    const result = await this.prisma.inventory.findUnique({
       where: {
         id: userInventory.id,
       },
       include: { skins: true },
     });
+
+    return result;
   }
 }

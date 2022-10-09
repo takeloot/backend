@@ -50,10 +50,13 @@ export class Skin {
   inspect?: string;
 
   @Field({ nullable: true })
-  float?: string;
+  float?: number;
 
-  @Field()
-  floatRange: number[];
+  @Field({ nullable: true })
+  floatMin?: number;
+
+  @Field({ nullable: true })
+  floatMax?: number;
 
   @Field({ nullable: true })
   pattern?: number;
