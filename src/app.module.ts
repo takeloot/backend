@@ -23,7 +23,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        redis: configService.get('db.redisUrl'),
+        redis: configService.get('db.redisURL'),
         defaultJobOptions: {
           removeOnComplete: true,
         },

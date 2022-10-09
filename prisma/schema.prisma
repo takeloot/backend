@@ -56,22 +56,37 @@ model Profile {
 }
 
 model Skin {
-  id            String     @id @default(cuid())
+  id            String       @id @default(cuid())
   appId         Int
   assetId       String
-  steamId       String     @unique
+  steamId       String       @unique
   steamImg      String
   steamName     String
   name          String?
+  fullName      String?
   img           String?
   preview       String?
+  hasScreenshot Boolean      @default(false)
   screenshot    String?
   inspect       String?
-  float         String?
-  fullName      String?
-  hasScreenshot Boolean    @default(false)
-  isStatTrak    Boolean    @default(false)
-  inventory     Inventory? @relation(fields: [inventoryId], references: [id])
+  float         Int?
+  floatMin      Int?
+  floatMax      Int?
+  pattern       Int?
+  quality       String?
+  rarity        String?
+  botPrice      Int?
+  defaultPrice  Int?
+  lowestPrice   Int?
+  price         Int?
+  overstockDiff Int?
+  hasHighDemand Boolean?
+  isUnsellable  Boolean?
+  isStatTrak    Boolean?
+  model3d       String?
+  collection    Collection[]
+  case          Case[]
+  inventory     Inventory?   @relation(fields: [inventoryId], references: [id])
   inventoryId   String?
 }
 
@@ -82,4 +97,24 @@ model Inventory {
   skins     Skin[]
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @unique
+}
+
+model Case {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  img       String
+  name      String
+  skin      Skin?    @relation(fields: [skinId], references: [id])
+  skinId    String?
+}
+
+model Collection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  img       String
+  name      String
+  skin      Skin?    @relation(fields: [skinId], references: [id])
+  skinId    String?
 }

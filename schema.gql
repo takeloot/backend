@@ -23,8 +23,46 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Case {
+  id: String!
+  img: String!
+  name: String!
+}
+
+type Collection {
+  id: String!
+  img: String!
+  name: String!
+}
+
 type Skin {
   id: String!
+  appId: Float!
+  assetId: String!
+  name: String
+  img: String
+  preview: String
+  screenshot: String
+  inspect: String
+  float: Float
+  floatMin: Float
+  floatMax: Float
+  pattern: Float
+  quality: String
+  rarity: String
+  botPrice: Float
+  defaultPrice: Float
+  lowestPrice: Float
+  price: Float
+  overstockDiff: Float
+  hasHighDemand: Boolean
+  isUnsellable: Boolean
+  model3d: String
+  collection: [Collection!]
+  case: [Case!]
+  fullName: String
+  hasScreenshot: Boolean!
+  isStatTrak: Boolean
   steamId: String!
   steamName: String!
   steamImg: String!
