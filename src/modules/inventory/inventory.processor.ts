@@ -7,6 +7,7 @@ import { InventoryService } from './inventory.service';
 
 const BUCKET_NAME = 'steam';
 const FILE_EXTENSION = 'png';
+
 @Processor('inventory-images-queue')
 export class InventoryProcessor {
   constructor(
@@ -18,6 +19,7 @@ export class InventoryProcessor {
 
   @Process('upload')
   async handleUpload(job: Job) {
+    console.log({ job });
     const { name, url, skinId } = job.data;
 
     this.logger.debug(`Start uploading ${name}...`);

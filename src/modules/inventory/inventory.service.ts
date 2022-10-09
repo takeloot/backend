@@ -53,7 +53,6 @@ export class InventoryService {
         language,
         // @ts-ignore: TODO: add types
         async (e, steamInventory) => {
-          console.log({ steamInventory });
           for (let i = 0; i < steamInventory.length; i++) {
             const steamSkin = steamInventory[i];
 
@@ -80,11 +79,15 @@ export class InventoryService {
 
             console.log({ skin });
 
-            await this.inventoryQueue.add('upload', {
-              name: `${steamSkin.id}-${steamSkin.assetid}`,
-              url: steamSkinImageURL,
-              skinId: skin.id,
-            });
+            try {
+              await this.inventoryQueue.add('upload', {
+                name: `${steamSkin.id}-${steamSkin.assetid}`,
+                url: steamSkinImageURL,
+                skinId: skin.id,
+              });
+            } catch (e) {
+              console.log({ e });
+            }
           }
         },
       );
