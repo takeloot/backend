@@ -13,6 +13,9 @@ export class Profile {
 
   @Field()
   provider: string;
+
+  @Field()
+  serviceId: string;
 }
 
 @ObjectType()

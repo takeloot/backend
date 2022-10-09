@@ -7,6 +7,7 @@ type Profile {
   name: String
   avatar: String
   provider: String!
+  serviceId: String!
 }
 
 type User {
