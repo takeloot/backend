@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import SteamCommunity from 'steamcommunity';
 import { Inventory } from './models/inventory.model';
@@ -42,58 +42,45 @@ export class InventoryService {
     steamId,
     tradableSkinsOnly,
     language,
-    inventoryId,
   }) {
-    try {
-      return await community.getUserInventoryContents(
-        steamId,
+    const result = [];
+
+    const getSteamInventory = () =>
+      new Promise<any[]>((resolve, reject) => {
+        community.getUserInventoryContents(
+          steamId,
+          appId,
+          2,
+          tradableSkinsOnly,
+          language,
+          // @ts-ignore: TODO: add types
+          async (error, steamInventory) => {
+            if (!error) {
+              resolve(steamInventory);
+            } else {
+              reject(new Error('Error while fetching steam inventory'));
+            }
+          },
+        );
+      });
+
+    const inventory = await getSteamInventory();
+
+    for (const steamSkin of inventory) {
+      const steamSkinImageURL = `${steamImageURL}${steamSkin.icon_url_large}`;
+
+      const skin = {
         appId,
-        2,
-        tradableSkinsOnly,
-        language,
-        // @ts-ignore: TODO: add types
-        async (e, steamInventory) => {
-          for (let i = 0; i < steamInventory.length; i++) {
-            const steamSkin = steamInventory[i];
+        assetId: steamSkin.assetid || null,
+        steamId: steamSkin.id,
+        steamImg: steamSkinImageURL,
+        steamName: steamSkin.market_name,
+      };
 
-            const steamSkinImageURL = `${steamImageURL}${steamSkin.icon_url_large}`;
-
-            const skin = await this.prisma.skin.upsert({
-              where: {
-                steamId: steamSkin.id,
-              },
-              update: {},
-              create: {
-                appId,
-                assetId: steamSkin.assetid || null,
-                steamId: steamSkin.id,
-                steamImg: steamSkinImageURL,
-                steamName: steamSkin.market_name,
-                inventory: {
-                  connect: {
-                    id: inventoryId,
-                  },
-                },
-              },
-            });
-
-            console.log({ skin });
-
-            // try {
-            //   await this.inventoryQueue.add('upload', {
-            //     name: `${steamSkin.id}-${steamSkin.assetid}`,
-            //     url: steamSkinImageURL,
-            //     skinId: skin.id,
-            //   });
-            // } catch (e) {
-            //   console.log({ e });
-            // }
-          }
-        },
-      );
-    } catch (error) {
-      Logger.error(error);
+      result.push(skin);
     }
+
+    return result;
   }
 
   allowRefetchSteamInventory({ inventoryCreatedAtMs, inventoryUpdatedAtMs }) {
@@ -138,12 +125,17 @@ export class InventoryService {
     });
 
     if (isSteamInventoryRefetchAllow) {
-      await this.fillInventoryWithSkins({
+      await this.prisma.skin.deleteMany({
+        where: {
+          inventoryId: userInventory.id,
+        },
+      });
+
+      const skins = await this.fillInventoryWithSkins({
         appId,
         steamId,
         tradableSkinsOnly: false,
         language: null,
-        inventoryId: userInventory.id,
       });
 
       await this.prisma.inventory.update({
@@ -152,6 +144,12 @@ export class InventoryService {
         },
         data: {
           updatedAt: new Date().toISOString(),
+          skins: {
+            createMany: {
+              data: skins,
+              skipDuplicates: true,
+            },
+          },
         },
         include: {
           skins: true,
