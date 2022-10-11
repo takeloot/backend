@@ -29,6 +29,9 @@ export class User {
   @Field({ nullable: true })
   avatar?: string;
 
+  @Field({ nullable: true })
+  tradeURL?: string;
+
   @Field()
   createdAt: Date;
 
