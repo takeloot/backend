@@ -1,4 +1,4 @@
-import { Args, Context, ID, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { User } from './models/user.model';
 import { PrismaService } from '../prisma/prisma.service';
@@ -10,8 +10,7 @@ export class UserResolver {
 
   @Query(() => User, { nullable: true })
   async user(
-    @Args({ name: 'id', type: () => ID, nullable: true })
-    id: string,
+    @Args({ name: 'id', type: () => ID, nullable: true }) id: string,
     @Context('userId') userId,
   ) {
     if (!id) {
@@ -32,5 +31,29 @@ export class UserResolver {
       where: { id: userId },
       include: { profiles: true },
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(() => Boolean)
+  async updateMyTradeUrl(
+    @Args({ name: 'tradeURL', type: () => String, nullable: true })
+    tradeURL: string,
+    @Context('userId') userId,
+  ) {
+    const steamTradeUrlRegex =
+      /https?:\/\/steamcommunity.com\/tradeoffer\/new\/\?partner=(\d+)&token=(.{8})$/;
+
+    if (!tradeURL || !tradeURL.match(steamTradeUrlRegex)) {
+      throw new Error('Invalid trade URL');
+    }
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        tradeURL,
+      },
+    });
+
+    return true;
   }
 }

@@ -86,4 +86,5 @@ type Query {
 type Mutation {
   logout: Boolean!
   updateConnectionStatus: Boolean!
+  updateMyTradeUrl(tradeURL: String): Boolean!
 }
