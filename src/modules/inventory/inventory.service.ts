@@ -7,7 +7,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 
 const community = new SteamCommunity();
-const steamImageURL = 'https://steamcommunity-a.akamaihd.net/economy/image/';
+const steamImageUrl = 'https://steamcommunity-a.akamaihd.net/economy/image/';
 
 @Injectable()
 export class InventoryService {
@@ -26,13 +26,13 @@ export class InventoryService {
     );
   }
 
-  async updateSkinImage({ skinId, skinImgURL }) {
+  async updateSkinImage({ skinId, skinImgUrl }) {
     return await this.prisma.skin.update({
       where: {
         id: skinId,
       },
       data: {
-        img: skinImgURL,
+        img: skinImgUrl,
       },
     });
   }
@@ -67,13 +67,13 @@ export class InventoryService {
     const inventory = await getSteamInventory();
 
     for (const steamSkin of inventory) {
-      const steamSkinImageURL = `${steamImageURL}${steamSkin.icon_url_large}`;
+      const steamSkinImageUrl = `${steamImageUrl}${steamSkin.icon_url_large}`;
 
       const skin = {
         appId,
         assetId: steamSkin.assetid || null,
         steamId: steamSkin.id,
-        steamImg: steamSkinImageURL,
+        steamImg: steamSkinImageUrl,
         steamName: steamSkin.market_name,
       };
 

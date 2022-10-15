@@ -14,7 +14,7 @@ type User {
   id: String!
   name: String
   avatar: String
-  tradeURL: String
+  tradeUrl: String
   createdAt: DateTime!
   updatedAt: DateTime!
   profiles: [Profile!]
@@ -87,5 +87,5 @@ type Query {
 type Mutation {
   logout: Boolean!
   updateConnectionStatus: Boolean!
-  updateMyTradeUrl(tradeURL: String): Boolean!
+  updateMyTradeUrl(tradeUrl: String): Boolean!
 }

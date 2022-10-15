@@ -30,7 +30,7 @@ export class User {
   avatar?: string;
 
   @Field({ nullable: true })
-  tradeURL?: string;
+  tradeUrl?: string;
 
   @Field()
   createdAt: Date;

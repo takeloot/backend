@@ -12,12 +12,12 @@ export const config = [
   })),
   registerAs('base', () => ({
     instanceId: nanoid(10),
-    apiURL: process.env.API_URL,
-    baseURL: process.env.BASE_URL,
-    cdnURL: process.env.CDN_URL,
+    apiUrl: process.env.API_URL,
+    baseUrl: process.env.BASE_URL,
+    cdnUrl: process.env.CDN_URL,
   })),
   registerAs('db', () => ({
-    redisURL: process.env.REDIS_URL,
+    redisUrl: process.env.REDIS_URL,
     redisHost: process.env.REDIS_HOST,
     redisPort: process.env.REDIS_PORT,
     minioEndPoint: process.env.MINIO_ENDPOINT,

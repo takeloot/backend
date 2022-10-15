@@ -33,7 +33,7 @@ model User {
   id         String       @id @default(cuid())
   name       String?
   avatar     String?
-  tradeURL   String?
+  tradeUrl   String?
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now()) @updatedAt
   profiles   Profile[]
@@ -117,4 +117,20 @@ model Collection {
   name      String
   skin      Skin?    @relation(fields: [skinId], references: [id])
   skinId    String?
+}
+
+model SteamBot {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  accountName    String
+  password       String
+  proxy          String?
+  sharedSecret   String
+  identitySecret String
+  avatar         String?
+  name           String
+  profileUrl     String
+  tradeUrl       String?
+  cookies        String[]
 }
