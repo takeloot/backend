@@ -1345,7 +1345,7 @@
 
 "@takeloot/dto@takeloot/dto":
   version "1.0.0"
-  resolved "https://codeload.github.com/takeloot/dto/tar.gz/85b74eb2792eab38fb6aad5b184aeee55a86a571"
+  resolved "https://codeload.github.com/takeloot/dto/tar.gz/b5994ba89a82d23399556400b1aaf397958211bd"
   dependencies:
     class-transformer "^0.3.1"
     class-validator "^0.12.2"
