@@ -67,7 +67,9 @@ export class InventoryService {
     const inventory = await getSteamInventory();
 
     for (const steamSkin of inventory) {
-      const steamSkinImageUrl = `${steamImageUrl}${steamSkin.icon_url_large}`;
+      const steamSkinImageUrl = `${steamImageUrl}${
+        steamSkin.icon_url_large || steamSkin.icon_url
+      }`;
 
       const skin = {
         appId,
