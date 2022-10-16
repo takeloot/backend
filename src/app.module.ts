@@ -13,6 +13,7 @@ import { ConnectionModule } from './modules/connection/connection.module';
 import { ConnectionService } from './modules/connection/connection.service';
 import { nanoid } from 'nanoid';
 import { InventoryModule } from './modules/inventory/inventory.module';
+import { SteamBotModule } from './modules/steam-bot/steam-bot.module';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        redis: configService.get('db.redisURL'),
+        redis: configService.get('db.redisUrl'),
         defaultJobOptions: {
           removeOnComplete: true,
         },
@@ -83,6 +84,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
     PrismaModule,
     UserModule,
     InventoryModule,
+    SteamBotModule,
   ],
 })
 export class AppModule {}

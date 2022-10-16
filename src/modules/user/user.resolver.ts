@@ -36,21 +36,21 @@ export class UserResolver {
   @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
   async updateMyTradeUrl(
-    @Args({ name: 'tradeURL', type: () => String, nullable: true })
-    tradeURL: string,
+    @Args({ name: 'tradeUrl', type: () => String, nullable: true })
+    tradeUrl: string,
     @Context('userId') userId,
   ) {
     const steamTradeUrlRegex =
       /https?:\/\/steamcommunity.com\/tradeoffer\/new\/\?partner=(\d+)&token=(.{8})$/;
 
-    if (!tradeURL || !tradeURL.match(steamTradeUrlRegex)) {
-      throw new Error('Invalid trade URL');
+    if (!tradeUrl || !tradeUrl.match(steamTradeUrlRegex)) {
+      throw new Error('Invalid trade Url');
     }
 
     await this.prisma.user.update({
       where: { id: userId },
       data: {
-        tradeURL,
+        tradeUrl,
       },
     });
 

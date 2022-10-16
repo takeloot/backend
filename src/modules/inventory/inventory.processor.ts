@@ -38,8 +38,8 @@ export class InventoryProcessor {
     if (res) {
       await this.inventoryService.updateSkinImage({
         skinId,
-        skinImgURL: `${this.configService.get(
-          'base.cdnURL',
+        skinImgUrl: `${this.configService.get(
+          'base.cdnUrl',
         )}/${BUCKET_NAME}/${name}.${FILE_EXTENSION}`,
       });
     }

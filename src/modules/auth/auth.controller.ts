@@ -92,7 +92,7 @@ export class AuthController {
   ) {
     req.session.codeHandler = codeHandler;
     req.session.redirectUri = redirectUri;
-    res.redirect(`${this.config.get('base.apiURL')}authwr/steam`);
+    res.redirect(`${this.config.get('base.apiUrl')}authwr/steam`);
   }
 
   @Get('authwr/steam')
