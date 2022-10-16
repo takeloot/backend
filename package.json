@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@takeloot/backend",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -60,7 +60,8 @@
     "steam-totp": "^2.1.2",
     "steam-tradeoffer-manager": "^2.10.5",
     "steam-user": "^4.25.0",
-    "steamcommunity": "^3.44.2"
+    "steamcommunity": "^3.44.2",
+    "@takeloot/dto": "takeloot/dto"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",

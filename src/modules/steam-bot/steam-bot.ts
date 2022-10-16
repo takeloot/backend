@@ -1,4 +1,3 @@
-import { EGame } from 'src/common';
 import {
   IGetTradeOfferOptions,
   ISendTradeOfferOptions,
@@ -6,6 +5,8 @@ import {
   ISteamBotOptions,
   ISteamEconItem,
 } from './steam-bot.interfaces';
+
+import { EGame } from '@takeloot/dto';
 
 import SteamCommunity from 'steamcommunity';
 import SteamTOTP from 'steam-totp';
