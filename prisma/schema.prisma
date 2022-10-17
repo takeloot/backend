@@ -75,10 +75,12 @@ model Skin {
   pattern       Int?
   quality       String?
   rarity        String?
+  rarityColor   String?
   botPrice      Int?
   defaultPrice  Int?
   lowestPrice   Int?
   price         Int?
+  rubPrice      Int?
   overstockDiff Int?
   hasHighDemand Boolean?
   isUnsellable  Boolean?
@@ -86,6 +88,8 @@ model Skin {
   model3d       String?
   collection    Collection[]
   case          Case[]
+  stickers      Sticker[]
+  isBlacklisted Boolean      @default(false)
   inventory     Inventory?   @relation(fields: [inventoryId], references: [id])
   inventoryId   String?
 }
@@ -110,6 +114,16 @@ model Case {
 }
 
 model Collection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  img       String
+  name      String
+  skin      Skin?    @relation(fields: [skinId], references: [id])
+  skinId    String?
+}
+
+model Sticker {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

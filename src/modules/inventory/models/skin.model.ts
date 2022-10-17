@@ -23,6 +23,18 @@ export class Collection {
   @Field()
   name: string;
 }
+
+@ObjectType()
+export class Sticker {
+  @Field()
+  id: string;
+
+  @Field()
+  img: string;
+
+  @Field()
+  name: string;
+}
 @ObjectType()
 export class Skin {
   @Field()
@@ -68,6 +80,9 @@ export class Skin {
   rarity?: string;
 
   @Field({ nullable: true })
+  rarityColor?: string;
+
+  @Field({ nullable: true })
   botPrice?: number;
 
   @Field({ nullable: true })
@@ -78,6 +93,9 @@ export class Skin {
 
   @Field({ nullable: true })
   price?: number;
+
+  @Field({ nullable: true })
+  rubPrice?: number;
 
   @Field({ nullable: true })
   overstockDiff?: number;
@@ -96,6 +114,9 @@ export class Skin {
 
   @Field(() => [Case], { nullable: true })
   case?: Case[];
+
+  @Field(() => [Sticker], { nullable: true })
+  stickers?: Sticker[];
 
   @Field({ nullable: true })
   fullName?: string;

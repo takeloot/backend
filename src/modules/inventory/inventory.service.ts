@@ -168,4 +168,12 @@ export class InventoryService {
 
     return result;
   }
+
+  async getUserItemById({ id }) {
+    return await this.prisma.skin.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
 }
