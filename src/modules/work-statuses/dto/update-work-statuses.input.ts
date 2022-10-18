@@ -1,5 +1,6 @@
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 
+// TODO: Move to @takeloot/dto later
 export enum EStatus {
   IS_DEPOSIT_DISABLED = 'isDepositDisabled',
   IS_WITHDRAWAL_DISABLED = 'isWithdrawalDisabled',

@@ -9,12 +9,14 @@ import { AuthGuard } from '../auth/guards';
 export class WorkStatusesResolver {
   constructor(private readonly workStatusesService: WorkStatusesService) {}
 
+  // TODO: Add creator/admin guard later
   @UseGuards(AuthGuard)
   @Query(() => WorkStatuses, { name: 'workStatuses' })
   async getWorkStatuses() {
     return await this.workStatusesService.get();
   }
 
+  // TODO: Add creator/admin guard later
   @UseGuards(AuthGuard)
   @Mutation(() => WorkStatuses)
   async toggleWorkStatus(@Args('status') status: UpdateWorkStatusesInput) {
