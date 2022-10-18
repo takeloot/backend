@@ -14,6 +14,7 @@ import { ConnectionService } from './modules/connection/connection.service';
 import { nanoid } from 'nanoid';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { SteamBotModule } from './modules/steam-bot/steam-bot.module';
+import { WorkStatusesModule } from './modules/work-statuses/work-statuses.module';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { SteamBotModule } from './modules/steam-bot/steam-bot.module';
     UserModule,
     InventoryModule,
     SteamBotModule,
+    WorkStatusesModule,
   ],
 })
 export class AppModule {}
