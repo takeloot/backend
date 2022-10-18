@@ -33,6 +33,6 @@ export class SteamBotController {
 
     dto.maFile = file;
 
-    return this.steamBotService.create(dto);
+    return await this.steamBotService.create(dto);
   }
 }
