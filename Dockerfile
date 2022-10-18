@@ -4,6 +4,7 @@ WORKDIR /app
 COPY dist/ .
 COPY prisma/migrations ./migrations
 COPY prisma/schema.prisma ./schema.prisma
+COPY prisma/seed.ts ./seed.ts
 COPY schema.gql ./schema.gql
 
 FROM base as dependencies
