@@ -14,14 +14,14 @@ export class WorkStatusesResolver {
   ) {}
 
   // TODO: Add creator/admin guard later
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Query(() => WorkStatuses, { name: 'workStatuses' })
   async getWorkStatuses() {
     return await this.workStatusesService.get();
   }
 
   // TODO: Add creator/admin guard later
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Mutation(() => WorkStatuses)
   async toggleWorkStatus(@Args('status') status: UpdateWorkStatusesInput) {
     const updatedWorkStatuses = await this.workStatusesService.update(status);
