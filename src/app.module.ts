@@ -15,6 +15,7 @@ import { nanoid } from 'nanoid';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { SteamBotModule } from './modules/steam-bot/steam-bot.module';
 import { WorkStatusesModule } from './modules/work-statuses/work-statuses.module';
+import { SharedModule } from './shared.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { WorkStatusesModule } from './modules/work-statuses/work-statuses.module
       }),
       inject: [ConfigService],
     }),
+    SharedModule,
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       imports: [AuthModule, ConnectionModule],
@@ -45,6 +47,7 @@ import { WorkStatusesModule } from './modules/work-statuses/work-statuses.module
         autoSchemaFile: join(process.cwd(), './schema.gql'),
         context: (ctx) => ctx?.extra?.socket?.ctx,
         subscriptions: {
+          'subscriptions-transport-ws': true,
           'graphql-ws': {
             onConnect: async (ctx: any) => {
               const token = ctx?.connectionParams?.token as string;
