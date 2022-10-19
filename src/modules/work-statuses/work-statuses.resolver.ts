@@ -1,13 +1,17 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Subscription } from '@nestjs/graphql';
 import { WorkStatusesService } from './work-statuses.service';
 import { WorkStatuses } from './models/work-statuses.model';
 import { UpdateWorkStatusesInput } from './dto/update-work-statuses.input';
-import { UseGuards } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 @Resolver(() => WorkStatuses)
 export class WorkStatusesResolver {
-  constructor(private readonly workStatusesService: WorkStatusesService) {}
+  constructor(
+    private readonly workStatusesService: WorkStatusesService,
+    @Inject('PUB_SUB') private readonly pubsub: RedisPubSub,
+  ) {}
 
   // TODO: Add creator/admin guard later
   @UseGuards(AuthGuard)
@@ -20,6 +24,17 @@ export class WorkStatusesResolver {
   @UseGuards(AuthGuard)
   @Mutation(() => WorkStatuses)
   async toggleWorkStatus(@Args('status') status: UpdateWorkStatusesInput) {
-    return await this.workStatusesService.update(status);
+    const updatedWorkStatuses = await this.workStatusesService.update(status);
+
+    this.pubsub.publish('workStatusesUpdated', {
+      workStatusesUpdated: updatedWorkStatuses,
+    });
+
+    return updatedWorkStatuses;
+  }
+
+  @Subscription(() => WorkStatuses)
+  workStatusesUpdated() {
+    return this.pubsub.asyncIterator('workStatusesUpdated');
   }
 }

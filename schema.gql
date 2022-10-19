@@ -120,3 +120,7 @@ enum EStatus {
   IS_QIWI_DISABLED
   IS_TINKOFF_DISABLED
 }
+
+type Subscription {
+  workStatusesUpdated: WorkStatuses!
+}
