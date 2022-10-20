@@ -77,15 +77,50 @@ type Inventory {
   skins: [Skin!]
 }
 
+type WorkStatuses {
+  id: String!
+  isDepositDisabled: Boolean!
+  isWithdrawalDisabled: Boolean!
+  isSellDisabled: Boolean!
+  isMaintenance: Boolean!
+  isSteamProblems: Boolean!
+  isFuckup: Boolean!
+  isQiwiDisabled: Boolean!
+  isTinkoffDisabled: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   user(id: ID): User
   me: User!
   userInventory(appId: Int!, userId: ID!): Inventory
   myInventory(appId: Int!): Inventory
+  workStatuses: WorkStatuses!
 }
 
 type Mutation {
   logout: Boolean!
   updateConnectionStatus: Boolean!
   updateMyTradeUrl(tradeUrl: String): Boolean!
+  toggleWorkStatus(status: UpdateWorkStatusesInput!): WorkStatuses!
+}
+
+input UpdateWorkStatusesInput {
+  name: EStatus!
+}
+
+enum EStatus {
+  IS_DEPOSIT_DISABLED
+  IS_WITHDRAWAL_DISABLED
+  IS_SELL_DISABLED
+  IS_MAINTENANCE
+  IS_STEAM_PROBLEMS
+  IS_FUCKUP
+  IS_QIWI_DISABLED
+  IS_TINKOFF_DISABLED
+}
+
+type Subscription {
+  workStatusesUpdated: WorkStatuses!
 }

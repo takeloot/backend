@@ -4,6 +4,7 @@ WORKDIR /app
 COPY dist/ .
 COPY prisma/migrations ./migrations
 COPY prisma/schema.prisma ./schema.prisma
+COPY prisma/seed.ts ./seed.ts
 COPY schema.gql ./schema.gql
 
 FROM base as dependencies
@@ -18,4 +19,4 @@ FROM prisma as release
 ENV PORT=3000
 EXPOSE ${PORT}
 
-CMD node ./main.js
+CMD node ./src/main.js
