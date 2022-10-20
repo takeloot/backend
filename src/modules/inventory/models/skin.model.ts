@@ -127,6 +127,9 @@ export class Skin {
   @Field({ nullable: true })
   isStatTrak?: boolean;
 
+  @Field({ defaultValue: false })
+  isBlacklisted: boolean;
+
   @Field()
   steamId: string;
 

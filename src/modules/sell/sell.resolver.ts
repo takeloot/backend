@@ -22,6 +22,6 @@ export class SellResolver {
     @Args({ name: 'userId', type: () => ID })
     userId: string,
   ) {
-    return this.sellService.create(dto, userId);
+    return this.sellService.create({ dto, userId });
   }
 }

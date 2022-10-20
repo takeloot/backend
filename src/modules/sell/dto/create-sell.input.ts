@@ -6,13 +6,13 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { SellItem } from '../models/sell-item.model';
+import { Skin } from 'src/modules/inventory/models/skin.model';
 
 @InputType()
 export class CreateSellInput {
-  @Field((type) => [SellItem])
+  @Field((type) => [Skin])
   @ArrayNotEmpty()
-  items: SellItem[];
+  items: Skin[];
 
   @Field((type) => String)
   @IsString()
