@@ -1,24 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
+import { Injectable, Logger } from '@nestjs/common';
+import { Queue } from 'bull';
 import { InventoryService } from '../inventory/inventory.service';
 import { Skin } from '../inventory/models/skin.model';
 import { PrismaService } from '../prisma/prisma.service';
+import { SteamBotService } from '../steam-bot/steam-bot.service';
 import { CreateSellInput } from './dto/create-sell.input';
-import { Sell } from './models/sell.model';
+import { ESellStatus, Sell } from './models/sell.model';
+import { EXECUTE_TRADE_STAGE_JOB } from './sell.constants';
+import { IExecuteTradeStageJob } from './sell.interfaces';
 
 @Injectable()
 export class SellService {
   constructor(
     private prisma: PrismaService,
     private readonly inventoryService: InventoryService,
+    private readonly steamBotService: SteamBotService,
+    @InjectQueue('SELL_QUEUE')
+    private readonly sellQueue: Queue,
   ) {}
 
-  async getActive({ userId }) {
-    return await this.prisma.sell.findFirst({
-      where: {
-        userId,
-      },
-    });
-  }
+  private readonly logger = new Logger(SellService.name);
 
   async create({ dto, userId }: { dto: CreateSellInput; userId: string }) {
     const workStatuses = await this.prisma.workStatuses.findFirst({
@@ -79,9 +81,10 @@ export class SellService {
       sellItems.push(sellItem);
     }
 
+    let createdSell;
+
     try {
-      // TODO: check has active sell
-      const haveActiveSell = false;
+      const haveActiveSell = await this.getUserActiveSell({ userId });
 
       if (haveActiveSell) {
         throw new Error('You already have active sell');
@@ -100,18 +103,61 @@ export class SellService {
       sell.wallet = wallet;
       sell.email = email;
 
-      // TODO: check if sell variation is automatic and set sell status to accepted by support
+      // TODO: check sell variation from admin settings
+      const isAutomaticSellVariation = true;
 
-      const createdSell = await this.prisma.sell.create({
+      if (isAutomaticSellVariation) {
+        const bot = await this.steamBotService.getFreeBot();
+
+        if (!bot) {
+          throw new Error('No free bots');
+        }
+
+        sell.steamBot = bot;
+        sell.status = ESellStatus.ACCEPTED_BY_SUPPORT;
+      }
+
+      createdSell = await this.prisma.sell.create({
         data: sell,
       });
 
-      // TODO: check if sell variation is automatic and add execute trade stage job
+      // TODO: check sell variation from admin settings
+      if (isAutomaticSellVariation) {
+        await this.addExecuteTradeStageJob({ sellId: createdSell.id });
+      }
 
       return createdSell;
     } catch (err) {
-      // delete prisma sell
+      await this.prisma.sell.delete({
+        where: createdSell.id,
+      });
+
       throw new Error(err);
+    } finally {
+      this.logger.debug(`Sell created: ${createdSell.id}`);
     }
+  }
+
+  async addExecuteTradeStageJob(jobData: IExecuteTradeStageJob) {
+    await this.sellQueue.add(EXECUTE_TRADE_STAGE_JOB, jobData);
+  }
+
+  async getUserActiveSell({ userId }) {
+    return await this.prisma.sell.findFirst({
+      where: {
+        userId,
+        OR: [
+          {
+            status: ESellStatus.WAITING_SUPPORT_ACCEPT,
+          },
+          {
+            status: ESellStatus.ACCEPTED_BY_SUPPORT,
+          },
+          {
+            status: ESellStatus.WAITING_USER_TRADE_CONFIRMATION,
+          },
+        ],
+      },
+    });
   }
 }

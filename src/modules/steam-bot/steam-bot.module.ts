@@ -8,5 +8,6 @@ import { SteamBotService } from './steam-bot.service';
   imports: [AuthModule, PrismaModule],
   controllers: [SteamBotController],
   providers: [SteamBotService],
+  exports: [SteamBotService],
 })
 export class SteamBotModule {}

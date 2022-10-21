@@ -1,4 +1,4 @@
-import { Resolver, Query, Context, Args, Mutation, ID } from '@nestjs/graphql';
+import { Resolver, Args, Mutation, ID } from '@nestjs/graphql';
 import { SellService } from './sell.service';
 import { Sell } from './models/sell.model';
 import { UseGuards } from '@nestjs/common';
@@ -8,12 +8,6 @@ import { CreateSellInput } from './dto/create-sell.input';
 @Resolver(() => Sell)
 export class SellResolver {
   constructor(private readonly sellService: SellService) {}
-
-  @UseGuards(AuthGuard)
-  @Query(() => Sell)
-  async getActiveSell(@Context('userId') userId) {
-    return this.sellService.getActive({ userId });
-  }
 
   @UseGuards(AuthGuard)
   @Mutation(() => Sell)

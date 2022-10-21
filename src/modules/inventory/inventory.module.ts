@@ -26,7 +26,7 @@ import { BullModule } from '@nestjs/bull';
       },
     }),
     BullModule.registerQueue({
-      name: 'inventory-images-queue',
+      name: 'INVENTORY_IMAGES_QUEUE',
     }),
     PrismaModule,
     AuthModule,

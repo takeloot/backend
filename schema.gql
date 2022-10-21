@@ -87,6 +87,22 @@ type Inventory {
   skins: [Skin!]
 }
 
+type SteamBotModel {
+  id: String!
+  accountName: String!
+  password: String!
+  proxy: String
+  sharedSecret: String!
+  identitySecret: String!
+  avatar: String
+  name: String!
+  profileUrl: String!
+  tradeUrl: String
+  cookies: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type WorkStatuses {
   id: String!
   isDepositDisabled: Boolean!
@@ -111,8 +127,21 @@ type Sell {
   user: User!
   ip: String!
   userAgent: String!
+  steamBot: SteamBotModel!
+  status: ESellStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+enum ESellStatus {
+  WAITING_SUPPORT_ACCEPT
+  ACCEPTED_BY_SUPPORT
+  WAITING_USER_TRADE_CONFIRMATION
+  TRADE_ACCEPTED_BY_USER
+  TRADE_TIMEOUT_EXCEEDED
+  PAY_REQUEST_TO_MERCHANT
+  PAY_ACCEPTED_BY_MERCHANT
+  COMPLETED
 }
 
 type Query {
@@ -121,7 +150,6 @@ type Query {
   userInventory(appId: Int!, userId: ID!): Inventory
   myInventory(appId: Int!): Inventory
   workStatuses: WorkStatuses!
-  getActiveSell: Sell!
 }
 
 type Mutation {

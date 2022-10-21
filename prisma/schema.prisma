@@ -154,6 +154,8 @@ model SteamBot {
   profileUrl     String
   tradeUrl       String?
   cookies        String[]
+  isDeativated   Boolean  @default(false)
+  sell           Sell?
 }
 
 model Ban {
@@ -182,16 +184,30 @@ model WorkStatuses {
 }
 
 model Sell {
-  id              String   @id @default(cuid())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @default(now()) @updatedAt
+  id              String     @id @default(cuid())
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now()) @updatedAt
   totalItemsPrice Int
   paymentProvider String
   wallet          String
   email           String
   items           Skin[]
-  user            User     @relation(fields: [userId], references: [id])
+  user            User       @relation(fields: [userId], references: [id])
   userId          String
   ip              String
   userAgent       String
+  steamBot        SteamBot?  @relation(fields: [steamBotId], references: [id])
+  steamBotId      String?    @unique
+  status          SellStatus @default(WAITING_SUPPORT_ACCEPT)
+}
+
+enum SellStatus {
+  WAITING_SUPPORT_ACCEPT
+  ACCEPTED_BY_SUPPORT
+  WAITING_USER_TRADE_CONFIRMATION
+  TRADE_ACCEPTED_BY_USER
+  TRADE_TIMEOUT_EXCEEDED
+  PAY_REQUEST_TO_MERCHANT
+  PAY_ACCEPTED_BY_MERCHANT
+  COMPLETED
 }

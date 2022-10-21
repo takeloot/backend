@@ -58,4 +58,13 @@ export class SteamBotService {
       data: steamBot,
     });
   }
+
+  async getFreeBot() {
+    return await this.prisma.steamBot.findFirst({
+      where: {
+        isDeativated: false,
+        sell: null,
+      },
+    });
+  }
 }
