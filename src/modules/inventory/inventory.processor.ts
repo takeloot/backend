@@ -8,7 +8,7 @@ import { InventoryService } from './inventory.service';
 const BUCKET_NAME = 'steam';
 const FILE_EXTENSION = 'png';
 
-@Processor('inventory-images-queue')
+@Processor('INVENTORY_IMAGES_QUEUE')
 export class InventoryProcessor {
   constructor(
     private readonly configService: ConfigService,

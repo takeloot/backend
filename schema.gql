@@ -37,6 +37,12 @@ type Collection {
   name: String!
 }
 
+type Sticker {
+  id: String!
+  img: String!
+  name: String!
+}
+
 type Skin {
   id: String!
   appId: Float!
@@ -52,19 +58,23 @@ type Skin {
   pattern: Float
   quality: String
   rarity: String
+  rarityColor: String
   botPrice: Float
   defaultPrice: Float
   lowestPrice: Float
   price: Float
+  rubPrice: Float
   overstockDiff: Float
   hasHighDemand: Boolean
   isUnsellable: Boolean
   model3d: String
   collection: [Collection!]
   case: [Case!]
+  stickers: [Sticker!]
   fullName: String
   hasScreenshot: Boolean!
   isStatTrak: Boolean
+  isBlacklisted: Boolean!
   steamId: String!
   steamName: String!
   steamImg: String!
@@ -75,6 +85,22 @@ type Inventory {
   createdAt: DateTime!
   updatedAt: DateTime!
   skins: [Skin!]
+}
+
+type SteamBotModel {
+  id: String!
+  accountName: String!
+  password: String!
+  proxy: String
+  sharedSecret: String!
+  identitySecret: String!
+  avatar: String
+  name: String!
+  profileUrl: String!
+  tradeUrl: String
+  cookies: [String!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type WorkStatuses {
@@ -91,6 +117,33 @@ type WorkStatuses {
   updatedAt: DateTime!
 }
 
+type Sell {
+  id: String!
+  totalItemsPrice: Float!
+  paymentProvider: String!
+  wallet: String!
+  email: String!
+  items: [Skin!]!
+  user: User!
+  ip: String!
+  userAgent: String!
+  steamBot: SteamBotModel!
+  status: ESellStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum ESellStatus {
+  WAITING_SUPPORT_ACCEPT
+  ACCEPTED_BY_SUPPORT
+  WAITING_USER_TRADE_CONFIRMATION
+  TRADE_ACCEPTED_BY_USER
+  TRADE_TIMEOUT_EXCEEDED
+  PAY_REQUEST_TO_MERCHANT
+  PAY_ACCEPTED_BY_MERCHANT
+  COMPLETED
+}
+
 type Query {
   user(id: ID): User
   me: User!
@@ -104,6 +157,7 @@ type Mutation {
   updateConnectionStatus: Boolean!
   updateMyTradeUrl(tradeUrl: String): Boolean!
   toggleWorkStatus(status: UpdateWorkStatusesInput!): WorkStatuses!
+  createSell(dto: CreateSellInput!, userId: ID!): Sell!
 }
 
 input UpdateWorkStatusesInput {
@@ -119,6 +173,18 @@ enum EStatus {
   IS_FUCKUP
   IS_QIWI_DISABLED
   IS_TINKOFF_DISABLED
+}
+
+input CreateSellInput {
+  items: [Item!]!
+  paymentProvider: String!
+  email: String!
+  wallet: String!
+}
+
+input Item {
+  id: String!
+  price: Float!
 }
 
 type Subscription {

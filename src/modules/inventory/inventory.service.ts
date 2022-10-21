@@ -14,7 +14,7 @@ export class InventoryService {
   constructor(
     private prisma: PrismaService,
     private readonly minioService: MinioService,
-    @InjectQueue('inventory-images-queue')
+    @InjectQueue('INVENTORY_IMAGES_QUEUE')
     private readonly inventoryQueue: Queue,
   ) {}
 
@@ -167,5 +167,16 @@ export class InventoryService {
     });
 
     return result;
+  }
+
+  async getUserItemById({ id }) {
+    return await this.prisma.skin.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        stickers: true,
+      },
+    });
   }
 }

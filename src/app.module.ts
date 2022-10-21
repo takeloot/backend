@@ -16,6 +16,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
 import { SteamBotModule } from './modules/steam-bot/steam-bot.module';
 import { WorkStatusesModule } from './modules/work-statuses/work-statuses.module';
 import { SharedModule } from './shared.module';
+import { SellModule } from './modules/sell/sell.module';
 
 @Module({
   imports: [
@@ -90,6 +91,7 @@ import { SharedModule } from './shared.module';
     InventoryModule,
     SteamBotModule,
     WorkStatusesModule,
+    SellModule,
   ],
 })
 export class AppModule {}
