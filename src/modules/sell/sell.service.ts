@@ -22,7 +22,17 @@ export class SellService {
 
   private readonly logger = new Logger(SellService.name);
 
-  async create({ dto, userId }: { dto: CreateSellInput; userId: string }) {
+  async create({
+    dto,
+    userId,
+    ip,
+    userAgent,
+  }: {
+    dto: CreateSellInput;
+    userId: string;
+    ip: string;
+    userAgent: string;
+  }) {
     const workStatuses = await this.prisma.workStatuses.findFirst({
       where: {
         pk: 1,
@@ -94,11 +104,8 @@ export class SellService {
       sell.user = user;
       sell.items = sellItems;
       sell.totalItemsPrice = totalItemsPrice;
-      // sell.ip = options.ip;
-      // sell.userAgent = options.userAgent;
-      // TODO: replace with real options
-      sell.ip = '';
-      sell.userAgent = '';
+      sell.ip = ip;
+      sell.userAgent = userAgent;
       sell.paymentProvider = paymentProvider;
       sell.wallet = wallet;
       sell.email = email;
