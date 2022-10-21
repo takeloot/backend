@@ -37,6 +37,12 @@ type Collection {
   name: String!
 }
 
+type Sticker {
+  id: String!
+  img: String!
+  name: String!
+}
+
 type Skin {
   id: String!
   appId: Float!
@@ -52,19 +58,23 @@ type Skin {
   pattern: Float
   quality: String
   rarity: String
+  rarityColor: String
   botPrice: Float
   defaultPrice: Float
   lowestPrice: Float
   price: Float
+  rubPrice: Float
   overstockDiff: Float
   hasHighDemand: Boolean
   isUnsellable: Boolean
   model3d: String
   collection: [Collection!]
   case: [Case!]
+  stickers: [Sticker!]
   fullName: String
   hasScreenshot: Boolean!
   isStatTrak: Boolean
+  isBlacklisted: Boolean!
   steamId: String!
   steamName: String!
   steamImg: String!
@@ -91,12 +101,27 @@ type WorkStatuses {
   updatedAt: DateTime!
 }
 
+type Sell {
+  id: String!
+  totalItemsPrice: Float!
+  paymentProvider: String!
+  wallet: String!
+  email: String!
+  items: [Skin!]!
+  user: User!
+  ip: String!
+  userAgent: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   user(id: ID): User
   me: User!
   userInventory(appId: Int!, userId: ID!): Inventory
   myInventory(appId: Int!): Inventory
   workStatuses: WorkStatuses!
+  getActiveSell: Sell!
 }
 
 type Mutation {
@@ -104,6 +129,7 @@ type Mutation {
   updateConnectionStatus: Boolean!
   updateMyTradeUrl(tradeUrl: String): Boolean!
   toggleWorkStatus(status: UpdateWorkStatusesInput!): WorkStatuses!
+  createSell(dto: CreateSellInput!, userId: ID!): Sell!
 }
 
 input UpdateWorkStatusesInput {
@@ -119,6 +145,18 @@ enum EStatus {
   IS_FUCKUP
   IS_QIWI_DISABLED
   IS_TINKOFF_DISABLED
+}
+
+input CreateSellInput {
+  items: [Item!]!
+  paymentProvider: String!
+  email: String!
+  wallet: String!
+}
+
+input Item {
+  id: String!
+  price: Float!
 }
 
 type Subscription {

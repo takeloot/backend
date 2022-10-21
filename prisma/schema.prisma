@@ -44,6 +44,7 @@ model User {
   isWithdrawalDisabled Boolean      @default(false)
   isSellDisabled       Boolean      @default(false)
   ban                  Ban[]
+  sells                Sell[]
 }
 
 model Profile {
@@ -96,6 +97,8 @@ model Skin {
   isBlacklisted Boolean      @default(false)
   inventory     Inventory?   @relation(fields: [inventoryId], references: [id])
   inventoryId   String?
+  sell          Sell?        @relation(fields: [sellId], references: [id])
+  sellId        String?
 }
 
 model Inventory {
@@ -176,4 +179,19 @@ model WorkStatuses {
   isFuckup             Boolean  @default(false)
   isQiwiDisabled       Boolean  @default(false)
   isTinkoffDisabled    Boolean  @default(false)
+}
+
+model Sell {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+  totalItemsPrice Int
+  paymentProvider String
+  wallet          String
+  email           String
+  items           Skin[]
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  ip              String
+  userAgent       String
 }

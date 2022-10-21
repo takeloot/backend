@@ -174,6 +174,9 @@ export class InventoryService {
       where: {
         id,
       },
+      include: {
+        stickers: true,
+      },
     });
   }
 }

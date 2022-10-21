@@ -13,11 +13,23 @@ export class SellService {
   ) {}
 
   async getActive({ userId }) {
-    return;
+    return await this.prisma.sell.findFirst({
+      where: {
+        userId,
+      },
+    });
   }
 
   async create({ dto, userId }: { dto: CreateSellInput; userId: string }) {
-    // TODO: check disable sell status
+    const workStatuses = await this.prisma.workStatuses.findFirst({
+      where: {
+        pk: 1,
+      },
+    });
+
+    if (workStatuses.isSellDisabled) {
+      throw new Error('Sell is disabled');
+    }
 
     const user = await this.prisma.user.findFirst({
       where: {
@@ -31,7 +43,7 @@ export class SellService {
       throw new Error('User has no trade url');
     }
 
-    const { items, paymentProvider, purse, email } = dto;
+    const { items, paymentProvider, wallet, email } = dto;
 
     const sellItems: Skin[] = [];
 
@@ -68,8 +80,9 @@ export class SellService {
     }
 
     try {
-      //TODO: check has active sell
+      // TODO: check has active sell
       const haveActiveSell = false;
+
       if (haveActiveSell) {
         throw new Error('You already have active sell');
       }
@@ -80,14 +93,18 @@ export class SellService {
       sell.totalItemsPrice = totalItemsPrice;
       // sell.ip = options.ip;
       // sell.userAgent = options.userAgent;
+      // TODO: replace with real options
+      sell.ip = '';
+      sell.userAgent = '';
       sell.paymentProvider = paymentProvider;
-      sell.purse = purse;
+      sell.wallet = wallet;
       sell.email = email;
 
       // TODO: check if sell variation is automatic and set sell status to accepted by support
 
-      // TODO: prisma sell create
-      const createdSell = null;
+      const createdSell = await this.prisma.sell.create({
+        data: sell,
+      });
 
       // TODO: check if sell variation is automatic and add execute trade stage job
 
