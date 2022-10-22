@@ -124,6 +124,7 @@ type Sell {
   wallet: String!
   email: String!
   items: [Skin!]!
+  givenItem: String!
   user: User!
   ip: String!
   userAgent: String!

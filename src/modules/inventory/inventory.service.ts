@@ -179,4 +179,14 @@ export class InventoryService {
       },
     });
   }
+
+  async deleteItemsByAssetIds(assetIds: string[]) {
+    return await this.prisma.skin.deleteMany({
+      where: {
+        assetId: {
+          in: assetIds,
+        },
+      },
+    });
+  }
 }

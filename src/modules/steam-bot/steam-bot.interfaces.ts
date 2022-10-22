@@ -1,7 +1,6 @@
 export interface ISteamEconItem {
-  assetid: string;
-  contextid: number;
-  appid: number;
+  assetId: string;
+  appId: number;
 }
 
 export interface ISteamBotOptions {

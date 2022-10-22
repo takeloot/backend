@@ -28,7 +28,6 @@ async function main() {
       isTinkoffDisabled: false,
     },
   });
-  console.log({ workStatuses });
 }
 main()
   .then(async () => {

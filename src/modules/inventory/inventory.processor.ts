@@ -19,7 +19,6 @@ export class InventoryProcessor {
 
   @Process('upload')
   async handleUpload(job: Job) {
-    console.log({ job });
     const { name, url, skinId } = job.data;
 
     this.logger.debug(`Start uploading ${name}...`);
@@ -49,6 +48,6 @@ export class InventoryProcessor {
 
   @OnQueueActive()
   onActive(job: Job) {
-    console.log(`Processing job ${job.id} of type ${job.name}...`);
+    this.logger.debug(`Processing job ${job.id} of type ${job.name}...`);
   }
 }

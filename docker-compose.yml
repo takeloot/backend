@@ -4,11 +4,11 @@ services:
   postgres:
     restart: unless-stopped
     container_name: 'postgres'
-    image: 'postgres:11'
+    image: 'postgres:15'
     ports:
       - '127.0.0.1:5432:5432'
     volumes:
-      - 'pgdata:/var/lib/postgresql/data/'
+      - 'postgresdata:/var/lib/postgresql/data/'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -49,6 +49,6 @@ services:
   #     - redis
 
 volumes:
-  pgdata: {}
+  postgresdata: {}
   redisdata: {}
   miniodata: {}

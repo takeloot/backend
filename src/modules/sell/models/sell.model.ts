@@ -1,4 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
 import { Skin } from 'src/modules/inventory/models/skin.model';
 import { SteamBotModel } from 'src/modules/steam-bot/models/steam-bot.model';
 import { User } from 'src/modules/user/models/user.model';
@@ -18,6 +19,7 @@ export enum ESellStatus {
 registerEnumType(ESellStatus, {
   name: 'ESellStatus',
 });
+
 @ObjectType()
 export class Sell {
   @Field()
@@ -37,6 +39,9 @@ export class Sell {
 
   @Field(() => [Skin])
   items: Skin[];
+
+  @Field(() => String)
+  givenItem?: Prisma.JsonValue;
 
   @Field(() => User)
   user: User;
