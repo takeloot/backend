@@ -13,11 +13,19 @@ type Profile {
 type User {
   id: String!
   name: String
+  role: UserRole!
   avatar: String
   tradeUrl: String
   createdAt: DateTime!
   updatedAt: DateTime!
   profiles: [Profile!]
+}
+
+enum UserRole {
+  CREATOR
+  ADMIN
+  SUPPORT
+  USER
 }
 
 """

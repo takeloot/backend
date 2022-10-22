@@ -99,7 +99,6 @@ export class InventoryService {
     return inventoryLastUpdatedMs > refetchLimitMs;
   }
 
-  // TODO: Fix getting inventory from first query
   async getUserInventory({ appId, userId }) {
     const userProfile = await this.prisma.profile.findFirst({
       where: { userId },
