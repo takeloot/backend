@@ -12,8 +12,6 @@ export class AuthService {
       data: { userId },
     });
 
-    this.logger.debug(tokenData);
-
     return tokenData.id;
   }
 
@@ -22,8 +20,6 @@ export class AuthService {
 
     if (id) {
       const tokenData = await this.prisma.token.findUnique({ where: { id } });
-
-      this.logger.debug(tokenData);
 
       if (tokenData) {
         userId = tokenData.userId;
