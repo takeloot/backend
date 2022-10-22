@@ -123,7 +123,7 @@ export class SteamBotService {
           EGame.CSGO,
         );
         myItems.push(item);
-        myItems = myItems.filter((tf2item) => tf2item);
+        myItems = myItems.filter((item) => item);
 
         identitySecret = steamBot.identitySecret;
       }
