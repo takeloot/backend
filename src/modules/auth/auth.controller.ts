@@ -25,13 +25,13 @@ export class AuthController {
   async authend(req, res) {
     const { redirectUri, codeHandler } = req.session;
 
-    this.logger.debug({ req, res });
+    this.logger.debug(req, res);
 
-    this.logger.debug({ redirectUri, codeHandler });
+    this.logger.debug(redirectUri, codeHandler);
 
     const profile = req?.user;
 
-    this.logger.debug({ profile });
+    this.logger.debug(profile);
 
     // Update or create profile and user
     if (!profile) {
@@ -48,7 +48,7 @@ export class AuthController {
 
     let userId;
 
-    this.logger.debug({ existProfile });
+    this.logger.debug(existProfile);
 
     if (existProfile) {
       await this.prisma.profile.update({
@@ -86,14 +86,14 @@ export class AuthController {
         },
       });
 
-      this.logger.debug({ newProfile });
+      this.logger.debug(newProfile);
 
       userId = newProfile.userId;
     }
 
     const token = await this.authService.createToken(userId);
 
-    this.logger.debug({ token });
+    this.logger.debug(token);
 
     return res.redirect(`${codeHandler}token=${token}&redirect=${redirectUri}`);
   }
@@ -109,7 +109,7 @@ export class AuthController {
     req.session.codeHandler = codeHandler;
     req.session.redirectUri = redirectUri;
 
-    this.logger.debug({ req, res });
+    this.logger.debug(req, res);
 
     this.logger.debug('req.session', req.session);
 
@@ -124,7 +124,7 @@ export class AuthController {
   @Get('authend/steam')
   @UseGuards(AuthGuard('steam'))
   async authendSteam(@Request() req, @Response() res) {
-    this.logger.debug({ req, res });
+    this.logger.debug(req, res);
     return this.authend(req, res);
   }
 }
