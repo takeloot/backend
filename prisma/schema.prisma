@@ -36,6 +36,7 @@ model User {
   tradeUrl             String?
   createdAt            DateTime     @default(now())
   updatedAt            DateTime     @default(now()) @updatedAt
+  role                 UserRole     @default(USER)
   profiles             Profile[]
   tokens               Token[]
   connection           Connection[]
@@ -217,4 +218,11 @@ enum SellStatus {
   PAY_DECLINED_BY_MERCHANT
   COMPLETED
   FAILED
+}
+
+enum UserRole {
+  CREATOR
+  ADMIN
+  SUPPORT
+  USER
 }
