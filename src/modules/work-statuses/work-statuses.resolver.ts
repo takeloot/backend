@@ -3,7 +3,7 @@ import { WorkStatusesService } from './work-statuses.service';
 import { WorkStatuses } from './models/work-statuses.model';
 import { UpdateWorkStatusesInput } from './dto/update-work-statuses.input';
 import { Inject, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../auth/guards';
+import { AdminGuard, AuthGuard } from '../auth/guards';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 @Resolver(() => WorkStatuses)
@@ -13,15 +13,12 @@ export class WorkStatusesResolver {
     @Inject('PUB_SUB') private readonly pubsub: RedisPubSub,
   ) {}
 
-  // TODO: Add creator/admin guard later
-  // @UseGuards(AuthGuard)
   @Query(() => WorkStatuses, { name: 'workStatuses' })
   async getWorkStatuses() {
     return await this.workStatusesService.get();
   }
 
-  // TODO: Add creator/admin guard later
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   @Mutation(() => WorkStatuses)
   async toggleWorkStatus(@Args('status') status: UpdateWorkStatusesInput) {
     const updatedWorkStatuses = await this.workStatusesService.update(status);
