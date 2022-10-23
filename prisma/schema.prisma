@@ -206,6 +206,15 @@ model Sell {
   tradeId          String?
 }
 
+model SteamMarketItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  name      String   @unique
+  price     Int
+  gameId    Int
+}
+
 enum SellStatus {
   WAITING_SUPPORT_ACCEPT
   ACCEPTED_BY_SUPPORT

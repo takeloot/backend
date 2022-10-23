@@ -2,6 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type SteamMarketItem {
+  name: String!
+  price: Float!
+  gameId: EGame!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum EGame {
+  DOTA2
+  CSGO
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Profile {
   id: String!
   name: String
@@ -27,11 +45,6 @@ enum UserRole {
   SUPPORT
   USER
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Case {
   id: String!
@@ -159,6 +172,14 @@ type Query {
   userInventory(appId: Int!, userId: ID!): Inventory
   myInventory(appId: Int!): Inventory
   workStatuses: WorkStatuses!
+  searchByPrice(query: SearchQueryInput!): SteamMarketItem!
+}
+
+input SearchQueryInput {
+  name: String!
+  price: Float!
+  compare: String!
+  limit: Float = 1
 }
 
 type Mutation {
@@ -167,6 +188,8 @@ type Mutation {
   updateMyTradeUrl(tradeUrl: String): Boolean!
   toggleWorkStatus(status: UpdateWorkStatusesInput!): WorkStatuses!
   createSell(dto: CreateSellInput!, userId: ID!): Sell!
+  updatePrice(name: String!, dto: UpdatePriceInput!): SteamMarketItem!
+  updatePrices(dto: UpdatePricesInput!): SteamMarketItem!
 }
 
 input UpdateWorkStatusesInput {
@@ -194,6 +217,14 @@ input CreateSellInput {
 input Item {
   id: String!
   price: Float!
+}
+
+input UpdatePriceInput {
+  price: Float!
+}
+
+input UpdatePricesInput {
+  game: EGame!
 }
 
 type Subscription {

@@ -6,6 +6,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from '../auth/auth.module';
 import { SteamBotModule } from '../steam-bot/steam-bot.module';
 import { BullModule } from '@nestjs/bull';
+import { SELL_QUEUE } from './sell.constants';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { BullModule } from '@nestjs/bull';
     InventoryModule,
     SteamBotModule,
     BullModule.registerQueue({
-      name: 'SELL_QUEUE',
+      name: SELL_QUEUE,
     }),
   ],
   providers: [SellResolver, SellService],
