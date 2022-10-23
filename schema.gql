@@ -158,6 +158,8 @@ type Query {
   me: User!
   userInventory(appId: Int!, userId: ID!): Inventory
   myInventory(appId: Int!): Inventory
+  steamBot(id: ID!): SteamBotModel
+  steamBots: [SteamBotModel!]!
   workStatuses: WorkStatuses!
 }
 

@@ -246,4 +246,16 @@ export class SteamBotService {
       },
     });
   }
+
+  async getSteamBotById(id: string) {
+    return await this.prisma.steamBot.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async getSteamBots() {
+    return await this.prisma.steamBot.findMany();
+  }
 }
