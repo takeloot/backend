@@ -13,6 +13,7 @@ import {
   EXECUTE_PAYOUT_STAGE_JOB,
   EXECUTE_TRADE_STAGE_JOB,
   MOVE_TO_PAYOUT_STAGE_JOB,
+  SELL_QUEUE,
 } from './sell.constants';
 import {
   ETradeOfferState,
@@ -27,7 +28,7 @@ export class SellService {
     private prisma: PrismaService,
     private readonly inventoryService: InventoryService,
     private readonly steamBotService: SteamBotService,
-    @InjectQueue('SELL_QUEUE')
+    @InjectQueue(SELL_QUEUE)
     private readonly sellQueue: Queue,
   ) {}
 

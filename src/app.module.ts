@@ -1,3 +1,4 @@
+import { SteamMarketPricesModule } from './modules/steam-market-prices/steam-market-prices.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -17,6 +18,7 @@ import { SteamBotModule } from './modules/steam-bot/steam-bot.module';
 import { WorkStatusesModule } from './modules/work-statuses/work-statuses.module';
 import { SharedModule } from './shared.module';
 import { SellModule } from './modules/sell/sell.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { SellModule } from './modules/sell/sell.module';
       inject: [ConfigService],
     }),
     SharedModule,
+    ScheduleModule.forRoot(),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       imports: [AuthModule, ConnectionModule],
@@ -92,6 +95,7 @@ import { SellModule } from './modules/sell/sell.module';
     SteamBotModule,
     WorkStatusesModule,
     SellModule,
+    SteamMarketPricesModule,
   ],
 })
 export class AppModule {}
