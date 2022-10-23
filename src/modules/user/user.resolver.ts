@@ -1,36 +1,35 @@
 import { Args, Context, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { User } from './models/user.model';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuthGuard } from '../auth/guards';
+import { AdminGuard, AuthGuard } from '../auth/guards';
+import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private prisma: PrismaService) {}
+  constructor(private userService: UserService) {}
 
+  @UseGuards(AuthGuard, AdminGuard)
+  @Query(() => [User])
+  // limit=60
+  // offset=0
+  // order=desc
+  async users() {
+    return await this.userService.getUsers();
+  }
+
+  @UseGuards(AuthGuard, AdminGuard)
   @Query(() => User, { nullable: true })
   async user(
     @Args({ name: 'id', type: () => ID, nullable: true }) id: string,
     @Context('userId') userId,
   ) {
-    if (!id) {
-      if (!userId) return null;
-      id = userId;
-    }
-
-    return await this.prisma.user.findFirst({
-      where: { id },
-      include: { profiles: true },
-    });
+    return await this.userService.getUserById(id, userId);
   }
 
   @UseGuards(AuthGuard)
   @Query(() => User)
   async me(@Context('userId') userId): Promise<User> {
-    return await this.prisma.user.findFirst({
-      where: { id: userId },
-      include: { profiles: true },
-    });
+    return await this.userService.getMe(userId);
   }
 
   @UseGuards(AuthGuard)
@@ -40,20 +39,6 @@ export class UserResolver {
     tradeUrl: string,
     @Context('userId') userId,
   ) {
-    const steamTradeUrlRegex =
-      /https?:\/\/steamcommunity.com\/tradeoffer\/new\/\?partner=(\d+)&token=(.{8})$/;
-
-    if (!tradeUrl || !tradeUrl.match(steamTradeUrlRegex)) {
-      throw new Error('Invalid trade Url');
-    }
-
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        tradeUrl,
-      },
-    });
-
-    return true;
+    return await this.userService.updateMyTradeUrl(tradeUrl, userId);
   }
 }
