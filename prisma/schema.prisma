@@ -30,22 +30,22 @@ model Connection {
 }
 
 model User {
-  id                   String       @id @default(cuid())
-  name                 String?
-  avatar               String?
-  tradeUrl             String?
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @default(now()) @updatedAt
-  role                 UserRole     @default(USER)
-  profiles             Profile[]
-  tokens               Token[]
-  connection           Connection[]
-  inventory            Inventory[]
-  isDepositDisabled    Boolean      @default(false)
-  isWithdrawalDisabled Boolean      @default(false)
-  isSellDisabled       Boolean      @default(false)
-  ban                  Ban[]
-  sells                Sell[]
+  id                  String       @id @default(cuid())
+  name                String?
+  avatar              String?
+  tradeUrl            String?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @default(now()) @updatedAt
+  role                UserRole     @default(USER)
+  profiles            Profile[]
+  tokens              Token[]
+  connection          Connection[]
+  inventory           Inventory[]
+  isDepositEnabled    Boolean      @default(true)
+  isWithdrawalEnabled Boolean      @default(true)
+  isSellEnabled       Boolean      @default(true)
+  ban                 Ban[]
+  sells               Sell[]
 }
 
 model Profile {
@@ -155,7 +155,7 @@ model SteamBot {
   profileUrl     String
   tradeUrl       String?
   cookies        String[]
-  isDeativated   Boolean  @default(false)
+  isDeactivated  Boolean  @default(false)
   sell           Sell?
 }
 
@@ -170,18 +170,18 @@ model Ban {
 }
 
 model WorkStatuses {
-  id                   String   @id @default(cuid())
-  pk                   Int      @unique @default(autoincrement())
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now()) @updatedAt
-  isDepositDisabled    Boolean  @default(false)
-  isWithdrawalDisabled Boolean  @default(false)
-  isSellDisabled       Boolean  @default(false)
-  isMaintenance        Boolean  @default(false)
-  isSteamProblems      Boolean  @default(false)
-  isFuckup             Boolean  @default(false)
-  isQiwiDisabled       Boolean  @default(false)
-  isTinkoffDisabled    Boolean  @default(false)
+  id                  String   @id @default(cuid())
+  pk                  Int      @unique @default(autoincrement())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now()) @updatedAt
+  isDepositEnabled    Boolean  @default(false)
+  isWithdrawalEnabled Boolean  @default(false)
+  isSellEnabled       Boolean  @default(false)
+  isMaintenance       Boolean  @default(false)
+  isSteamProblems     Boolean  @default(false)
+  isFuckup            Boolean  @default(false)
+  isQiwiEnabled       Boolean  @default(false)
+  isTinkoffEnabled    Boolean  @default(false)
 }
 
 model Sell {

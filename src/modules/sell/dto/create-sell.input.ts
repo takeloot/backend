@@ -1,10 +1,10 @@
 import { InputType, Field } from '@nestjs/graphql';
 import {
   ArrayNotEmpty,
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  MinLength,
+  // IsEmail,
+  // IsNotEmpty,
+  // IsString,
+  // MinLength,
 } from 'class-validator';
 
 @InputType()
@@ -21,20 +21,20 @@ export class CreateSellInput {
   @ArrayNotEmpty()
   items: Item[];
 
-  @Field((type) => String)
-  @IsString()
-  @IsNotEmpty()
-  paymentProvider: string;
+  // @Field((type) => String)
+  // @IsString()
+  // @IsNotEmpty()
+  // paymentProvider: string;
 
-  @Field((type) => String)
-  @IsString()
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
+  // @Field((type) => String)
+  // @IsString()
+  // @IsNotEmpty()
+  // @IsEmail()
+  // email: string;
 
-  @Field((type) => String)
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  wallet: string;
+  // @Field((type) => String)
+  // @IsString()
+  // @IsNotEmpty()
+  // @MinLength(5)
+  // wallet: string;
 }

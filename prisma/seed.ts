@@ -3,29 +3,29 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const workStatuses = await prisma.workStatuses.upsert({
+  await prisma.workStatuses.upsert({
     where: {
       pk: 1,
     },
     create: {
-      isDepositDisabled: false,
-      isWithdrawalDisabled: false,
-      isSellDisabled: false,
+      isDepositEnabled: true,
+      isWithdrawalEnabled: true,
+      isSellEnabled: true,
       isMaintenance: false,
       isSteamProblems: false,
       isFuckup: false,
-      isQiwiDisabled: false,
-      isTinkoffDisabled: false,
+      isQiwiEnabled: true,
+      isTinkoffEnabled: true,
     },
     update: {
-      isDepositDisabled: false,
-      isWithdrawalDisabled: false,
-      isSellDisabled: false,
+      isDepositEnabled: true,
+      isWithdrawalEnabled: true,
+      isSellEnabled: true,
       isMaintenance: false,
       isSteamProblems: false,
       isFuckup: false,
-      isQiwiDisabled: false,
-      isTinkoffDisabled: false,
+      isQiwiEnabled: true,
+      isTinkoffEnabled: true,
     },
   });
 }
