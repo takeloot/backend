@@ -55,12 +55,12 @@ export class SellService {
     dto,
     userId,
     ip,
-    userAgent,
-  }: {
+  }: // userAgent,
+  {
     dto: CreateSellInput;
     userId: string;
     ip: string;
-    userAgent: string;
+    // userAgent: string;
   }) {
     const workStatuses = await this.prisma.workStatuses.findFirst({
       where: {
@@ -139,10 +139,11 @@ export class SellService {
       sell.items = sellItems;
       sell.totalItemsPrice = totalItemsPrice;
       sell.ip = ip;
-      sell.userAgent = userAgent;
+      // sell.userAgent = userAgent;
       // sell.paymentProvider = paymentProvider;
       // sell.wallet = wallet;
       // sell.email = email;
+      sell.userAgent = '';
       sell.paymentProvider = '';
       sell.wallet = '';
       sell.email = '';

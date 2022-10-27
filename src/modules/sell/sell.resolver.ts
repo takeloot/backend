@@ -4,7 +4,7 @@ import { Sell } from './models/sell.model';
 import { Ip, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards';
 import { CreateSellInput } from './dto/create-sell.input';
-import { UserAgent } from 'src/common';
+// import { UserAgent } from 'src/common';
 
 @Resolver(() => Sell)
 export class SellResolver {
@@ -17,8 +17,13 @@ export class SellResolver {
     @Args({ name: 'userId', type: () => ID })
     userId: string,
     @Ip() ip: string,
-    @UserAgent() userAgent: string,
+    // @UserAgent() userAgent: string,
   ) {
-    return this.sellService.create({ dto, userId, ip, userAgent });
+    return this.sellService.create({
+      dto,
+      userId,
+      ip,
+      // userAgent
+    });
   }
 }
