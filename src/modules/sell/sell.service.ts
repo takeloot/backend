@@ -178,8 +178,6 @@ export class SellService {
       });
 
       throw new Error(err);
-    } finally {
-      this.logger.debug(`Sell created: ${createdSell.id}`);
     }
   }
 
