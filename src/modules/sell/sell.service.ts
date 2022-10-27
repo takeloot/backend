@@ -139,11 +139,12 @@ export class SellService {
       // sell.user = user;
       // sell.items = sellItems;
       sell.totalItemsPrice = totalItemsPrice;
-      sell.ip = ip;
+      // sell.ip = ip;
       // sell.userAgent = userAgent;
       // sell.paymentProvider = paymentProvider;
       // sell.wallet = wallet;
       // sell.email = email;
+      sell.ip = '';
       sell.userAgent = '';
       sell.paymentProvider = '';
       sell.wallet = '';
@@ -163,15 +164,19 @@ export class SellService {
         sell.status = ESellStatus.ACCEPTED_BY_SUPPORT;
       }
 
+      console.log({ sellItems });
+
       const sellItemsIds = sellItems.map((item) => ({
         id: item.id,
       }));
+
+      console.log({ sellItemsIds });
 
       createdSell = await this.prisma.sell.create({
         data: {
           ...sell,
           items: {
-            connect: [...sellItemsIds],
+            connect: sellItemsIds,
           },
           user: {
             connect: {
