@@ -5,14 +5,14 @@ export class WorkStatuses {
   @Field()
   id: string;
 
-  @Field({ defaultValue: false })
-  isDepositDisabled: boolean;
+  @Field({ defaultValue: true })
+  isDepositEnabled: boolean;
 
-  @Field({ defaultValue: false })
-  isWithdrawalDisabled: boolean;
+  @Field({ defaultValue: true })
+  isWithdrawalEnabled: boolean;
 
-  @Field({ defaultValue: false })
-  isSellDisabled: boolean;
+  @Field({ defaultValue: true })
+  isSellEnabled: boolean;
 
   @Field({ defaultValue: false })
   isMaintenance: boolean;
@@ -23,11 +23,11 @@ export class WorkStatuses {
   @Field({ defaultValue: false })
   isFuckup: boolean;
 
-  @Field({ defaultValue: false })
-  isQiwiDisabled: boolean;
+  @Field({ defaultValue: true })
+  isQiwiEnabled: boolean;
 
-  @Field({ defaultValue: false })
-  isTinkoffDisabled: boolean;
+  @Field({ defaultValue: true })
+  isTinkoffEnabled: boolean;
 
   @Field()
   createdAt: Date;

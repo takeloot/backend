@@ -67,7 +67,7 @@ export class SteamBotService {
   async getFreeBot() {
     return await this.prisma.steamBot.findFirst({
       where: {
-        isDeativated: false,
+        isDeactivated: false,
         sell: null,
       },
     });
@@ -76,7 +76,7 @@ export class SteamBotService {
   async linkFreeBotToSell(sellId: string) {
     const freeBot = await this.prisma.steamBot.findFirst({
       where: {
-        isDeativated: false,
+        isDeactivated: false,
         sell: null,
       },
     });
@@ -207,7 +207,7 @@ export class SteamBotService {
         accountName,
       },
       data: {
-        isDeativated: true,
+        isDeactivated: true,
       },
     });
   }

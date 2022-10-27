@@ -68,7 +68,7 @@ export class SellService {
       },
     });
 
-    if (workStatuses.isSellDisabled) {
+    if (!workStatuses.isSellEnabled) {
       throw new Error('Sell is disabled');
     }
 
@@ -84,7 +84,12 @@ export class SellService {
       throw new Error('User has no trade url');
     }
 
-    const { items, paymentProvider, wallet, email } = dto;
+    const {
+      items,
+      // paymentProvider,
+      // wallet,
+      // email
+    } = dto;
 
     const sellItems: Skin[] = [];
 
@@ -95,13 +100,13 @@ export class SellService {
         id: item.id,
       });
 
-      if (
-        !userInventoryItem ||
-        userInventoryItem?.isBlacklisted ||
-        userInventoryItem?.price !== item.price
-      ) {
-        throw new Error('Price changed');
-      }
+      // if (
+      //   !userInventoryItem ||
+      //   userInventoryItem?.isBlacklisted ||
+      //   userInventoryItem?.price !== item.price
+      // ) {
+      //   throw new Error('Price changed');
+      // }
 
       const sellItem = new Skin();
       sellItem.appId = userInventoryItem.appId;
@@ -135,9 +140,12 @@ export class SellService {
       sell.totalItemsPrice = totalItemsPrice;
       sell.ip = ip;
       sell.userAgent = userAgent;
-      sell.paymentProvider = paymentProvider;
-      sell.wallet = wallet;
-      sell.email = email;
+      // sell.paymentProvider = paymentProvider;
+      // sell.wallet = wallet;
+      // sell.email = email;
+      sell.paymentProvider = '';
+      sell.wallet = '';
+      sell.email = '';
 
       // TODO: check sell variation from admin settings
       const isAutomaticSellVariation = true;
