@@ -173,9 +173,13 @@ export class SellService {
 
       return createdSell;
     } catch (err) {
-      await this.prisma.sell.delete({
-        where: createdSell.id,
-      });
+      if (createdSell) {
+        await this.prisma.sell.delete({
+          where: {
+            id: createdSell.id,
+          },
+        });
+      }
 
       throw new Error(err);
     }
