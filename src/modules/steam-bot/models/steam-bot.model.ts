@@ -35,6 +35,9 @@ export class SteamBotModel {
   @Field(() => [String])
   cookies: string[];
 
+  @Field({ defaultValue: false })
+  isDeactivated: boolean;
+
   @Field()
   createdAt: Date;
 
