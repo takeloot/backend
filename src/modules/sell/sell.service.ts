@@ -135,7 +135,7 @@ export class SellService {
       }
 
       const sell = new Sell();
-      sell.user = user;
+      // sell.user = user;
       sell.items = sellItems;
       sell.totalItemsPrice = totalItemsPrice;
       sell.ip = ip;
@@ -151,19 +151,31 @@ export class SellService {
       // TODO: check sell variation from admin settings
       const isAutomaticSellVariation = true;
 
+      const bot = await this.steamBotService.getFreeBot();
+
+      if (!bot) {
+        throw new Error('No free bots');
+      }
+
       if (isAutomaticSellVariation) {
-        const bot = await this.steamBotService.getFreeBot();
-
-        if (!bot) {
-          throw new Error('No free bots');
-        }
-
-        sell.steamBot = bot;
+        // sell.steamBot = bot;
         sell.status = ESellStatus.ACCEPTED_BY_SUPPORT;
       }
 
       createdSell = await this.prisma.sell.create({
-        data: sell,
+        data: {
+          ...sell,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+          steamBot: {
+            connect: {
+              id: bot.id,
+            },
+          },
+        },
       });
 
       // TODO: check sell variation from admin settings
