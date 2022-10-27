@@ -109,6 +109,7 @@ export class SellService {
       // }
 
       const sellItem = new Skin();
+      sellItem.id = userInventoryItem.id;
       sellItem.appId = userInventoryItem.appId;
       sellItem.assetId = userInventoryItem.assetId;
       sellItem.name = userInventoryItem.name;
@@ -136,7 +137,7 @@ export class SellService {
 
       const sell = new Sell();
       // sell.user = user;
-      sell.items = sellItems;
+      // sell.items = sellItems;
       sell.totalItemsPrice = totalItemsPrice;
       sell.ip = ip;
       // sell.userAgent = userAgent;
@@ -162,9 +163,16 @@ export class SellService {
         sell.status = ESellStatus.ACCEPTED_BY_SUPPORT;
       }
 
+      const sellItemsIds = sellItems.map((item) => ({
+        id: item.id,
+      }));
+
       createdSell = await this.prisma.sell.create({
         data: {
           ...sell,
+          items: {
+            connect: [...sellItemsIds],
+          },
           user: {
             connect: {
               id: user.id,
@@ -175,6 +183,11 @@ export class SellService {
               id: bot.id,
             },
           },
+        },
+        include: {
+          items: true,
+          steamBot: true,
+          user: true,
         },
       });
 
