@@ -5,7 +5,6 @@ export class SteamBotModel {
   @Field()
   id: string;
 
-  @Field()
   @HideField()
   accountName: string;
 
@@ -36,7 +35,7 @@ export class SteamBotModel {
   @HideField()
   cookies: string[];
 
-  @HideField()
+  @Field()
   isDeactivated: boolean;
 
   @Field()

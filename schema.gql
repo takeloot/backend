@@ -110,11 +110,11 @@ type Inventory {
 
 type SteamBotModel {
   id: String!
-  accountName: String!
   avatar: String
   name: String!
   profileUrl: String!
   tradeUrl: String
+  isDeactivated: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
