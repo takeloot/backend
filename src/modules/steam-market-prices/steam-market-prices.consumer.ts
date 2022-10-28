@@ -29,7 +29,6 @@ export class SteamMarketPricesConsumer {
   async updatePrices(job: Job<ISteamMarketUpdatePricesJob>) {
     this.logger.debug('STARTED JOB', job.data);
     const { data } = job;
-    console.log({ data });
     const previousProgress = job.progress();
     let current = 0;
     let end = Number.MAX_VALUE;

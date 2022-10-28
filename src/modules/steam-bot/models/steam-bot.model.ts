@@ -1,23 +1,23 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, HideField } from '@nestjs/graphql';
 
 @ObjectType()
 export class SteamBotModel {
   @Field()
   id: string;
 
-  @Field()
+  @HideField()
   accountName: string;
 
-  @Field()
+  @HideField()
   password: string;
 
-  @Field({ nullable: true })
+  @HideField()
   proxy?: string;
 
-  @Field()
+  @HideField()
   sharedSecret: string;
 
-  @Field()
+  @HideField()
   identitySecret: string;
 
   @Field({ nullable: true })
@@ -32,10 +32,10 @@ export class SteamBotModel {
   @Field({ nullable: true })
   tradeUrl?: string;
 
-  @Field(() => [String])
+  @HideField()
   cookies: string[];
 
-  @Field({ defaultValue: false })
+  @Field()
   isDeactivated: boolean;
 
   @Field()

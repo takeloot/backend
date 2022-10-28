@@ -218,7 +218,9 @@ export class SteamBotService {
         accountName,
       },
       data: {
-        sell: null,
+        sell: {
+          disconnect: true,
+        },
       },
     });
   }
