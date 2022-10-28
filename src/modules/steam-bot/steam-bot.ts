@@ -12,6 +12,7 @@ import SteamCommunity from 'steamcommunity';
 import SteamTOTP from 'steam-totp';
 import TradeOfferManager from 'steam-tradeoffer-manager';
 import Request from 'request';
+import { Logger } from '@nestjs/common';
 
 export class SteamBot {
   private accountName: string;
@@ -28,6 +29,8 @@ export class SteamBot {
       if (proxy) this.proxy = proxy;
     }
   }
+
+  private readonly logger = new Logger(SteamBot.name);
 
   public async login({ sharedSecret }) {
     const twoFactorCode = await new Promise((resolve, reject) =>
@@ -109,17 +112,17 @@ export class SteamBot {
       language: 'en',
     });
 
-    await new Promise<void>((resolve, reject) => {
-      manager.setCookies(cookies, (err) => {
-        if (err) reject(err);
-        else resolve();
-      });
+    await manager.setCookies(cookies, (err) => {
+      if (err) {
+        this.logger.error(err);
+      }
     });
 
     return new Promise<ISteamEconItem[]>((resolve, reject) => {
       manager.getInventoryContents(game, 2, true, (err, inventory) => {
-        if (err) reject(err);
-        else {
+        if (err) {
+          reject(err);
+        } else {
           manager.shutdown();
           resolve(inventory);
         }
@@ -139,7 +142,7 @@ export class SteamBot {
 
     const offer = manager.createOffer(partner);
     offer.addTheirItems(theirItems);
-    offer.addMyItems(myItems);
+    // offer.addMyItems(myItems);
 
     return new Promise<ISendTradeOfferResult>((resolve, reject) => {
       offer.send((err, status) => {

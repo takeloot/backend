@@ -111,29 +111,24 @@ type Inventory {
 type SteamBotModel {
   id: String!
   accountName: String!
-  password: String!
-  proxy: String
-  sharedSecret: String!
-  identitySecret: String!
   avatar: String
   name: String!
   profileUrl: String!
   tradeUrl: String
-  cookies: [String!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
 type WorkStatuses {
   id: String!
-  isDepositDisabled: Boolean!
-  isWithdrawalDisabled: Boolean!
-  isSellDisabled: Boolean!
+  isDepositEnabled: Boolean!
+  isWithdrawalEnabled: Boolean!
+  isSellEnabled: Boolean!
   isMaintenance: Boolean!
   isSteamProblems: Boolean!
   isFuckup: Boolean!
-  isQiwiDisabled: Boolean!
-  isTinkoffDisabled: Boolean!
+  isQiwiEnabled: Boolean!
+  isTinkoffEnabled: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -145,7 +140,7 @@ type Sell {
   wallet: String!
   email: String!
   items: [Skin!]!
-  givenItem: String!
+  givenItem: String
   user: User!
   ip: String!
   userAgent: String!
@@ -200,21 +195,18 @@ input UpdateWorkStatusesInput {
 }
 
 enum EStatus {
-  IS_DEPOSIT_DISABLED
-  IS_WITHDRAWAL_DISABLED
-  IS_SELL_DISABLED
+  IS_DEPOSIT_ENABLED
+  IS_WITHDRAWAL_ENABLED
+  IS_SELL_ENABLED
   IS_MAINTENANCE
   IS_STEAM_PROBLEMS
   IS_FUCKUP
-  IS_QIWI_DISABLED
-  IS_TINKOFF_DISABLED
+  IS_QIWI_ENABLED
+  IS_TINKOFF_ENABLED
 }
 
 input CreateSellInput {
   items: [Item!]!
-  paymentProvider: String!
-  email: String!
-  wallet: String!
 }
 
 input Item {

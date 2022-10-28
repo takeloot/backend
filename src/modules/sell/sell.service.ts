@@ -53,10 +53,10 @@ export class SellService {
 
   async create({
     dto,
+    // ip,
+    // userAgent,
     userId,
-    ip,
-  }: // userAgent,
-  {
+  }: {
     dto: CreateSellInput;
     userId: string;
     ip: string;
@@ -164,13 +164,9 @@ export class SellService {
         sell.status = ESellStatus.ACCEPTED_BY_SUPPORT;
       }
 
-      console.log({ sellItems });
-
       const sellItemsIds = sellItems.map((item) => ({
         id: item.id,
       }));
-
-      console.log({ sellItemsIds });
 
       createdSell = await this.prisma.sell.create({
         data: {

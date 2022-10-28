@@ -40,7 +40,7 @@ export class Sell {
   @Field(() => [Skin])
   items: Skin[];
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   givenItem?: Prisma.JsonValue;
 
   @Field(() => User)

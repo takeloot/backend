@@ -41,8 +41,9 @@ export class SellFacade {
     const { user, steamBot, items } = await this.sellService.getById(id);
     const steamEconItems: ISteamEconItem[] = items.map(
       ({ assetId, appId }) => ({
-        assetId,
-        appId,
+        assetid: assetId,
+        appid: appId,
+        contextid: 2,
       }),
     );
 
@@ -51,14 +52,17 @@ export class SellFacade {
         accountName: steamBot.accountName,
         theirItems: steamEconItems,
         tradeOfferLink: user.tradeUrl,
-        giveItem: true,
+        giveItem: false,
       }),
     );
 
+    console.log({ err });
+
     const isTradeNotSent = !!(err || sendTradeOfferResult?.status !== 'sent');
+
     if (isTradeNotSent) {
       // @ts-ignore
-      if (err?.data?.message?.includes('Not Logged In')) {
+      if (err.message.includes('Not Logged In')) {
         try {
           await this.steamBotService.refreshBotCookies(steamBot.accountName);
           return await this.executeTradeStage(id);
@@ -219,7 +223,7 @@ export class SellFacade {
   async makeSellFailed(bot: SteamBotModel, id: string, user: User, err: Error) {
     await this.steamBotService.freeBot(bot.accountName);
     await this.sellService.updateSellStatus(id, SellStatus.FAILED);
-    await this.sellService.updateError(id, err.constructor.name);
+    await this.sellService.updateError(id, err.message);
 
     // TODO: subscription
     // sellStatusChanged(user.id.toString(), {
