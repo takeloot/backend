@@ -56,7 +56,7 @@ export class SellFacade {
       }),
     );
 
-    console.log({ err });
+    this.logger.error({ err });
 
     const isTradeNotSent = !!(err || sendTradeOfferResult?.status !== 'sent');
 
