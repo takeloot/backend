@@ -33,9 +33,6 @@ import { ScheduleModule } from '@nestjs/schedule';
           host: configService.get('db.redisHost'),
           port: configService.get('db.redisPort'),
         },
-        defaultJobOptions: {
-          removeOnComplete: true,
-        },
       }),
       inject: [ConfigService],
     }),
