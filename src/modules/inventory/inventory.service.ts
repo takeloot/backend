@@ -20,6 +20,8 @@ export class InventoryService {
   ) {}
 
   async uploadImageToBucket({ name, buffer }) {
+    this.minioService.client.removeObject('steam', `${name}.png`, buffer);
+
     return await this.minioService.client.putObject(
       'steam',
       `${name}.png`,
@@ -168,7 +170,7 @@ export class InventoryService {
 
     result.skins.forEach(async (skin) => {
       await this.inventoryQueue.add('upload', {
-        name: `${skin.id}-${skin.assetId}`,
+        name: `${skin.steamId}-${skin.assetId}`,
         url: skin.steamImg,
         skinId: skin.id,
       });
