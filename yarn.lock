@@ -1467,14 +1467,6 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/bull@^3.15.9":
-  version "3.15.9"
-  resolved "https://registry.yarnpkg.com/@types/bull/-/bull-3.15.9.tgz#e10e0901ec3762bff85716b3c580277960751c93"
-  integrity sha512-MPUcyPPQauAmynoO3ezHAmCOhbB0pWmYyijr/5ctaCqhbKWsjW0YCod38ZcLzUBprosfZ9dPqfYIcfdKjk7RNQ==
-  dependencies:
-    "@types/ioredis" "*"
-    "@types/redis" "^2.8.0"
-
 "@types/bytebuffer@*":
   version "5.0.44"
   resolved "https://registry.yarnpkg.com/@types/bytebuffer/-/bytebuffer-5.0.44.tgz#553015fb34db1fc3eb3f7b232bff91c006c251a1"
@@ -1488,14 +1480,14 @@
   resolved "https://registry.yarnpkg.com/@types/caseless/-/caseless-0.12.2.tgz#f65d3d6389e01eeb458bd54dc8f52b95a9463bc8"
   integrity sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==
 
-"@types/connect-redis@^0.0.18":
-  version "0.0.18"
-  resolved "https://registry.yarnpkg.com/@types/connect-redis/-/connect-redis-0.0.18.tgz#f2dd17607626a741177efa22641cc2030924eda3"
-  integrity sha512-iGygGbXgPIr94DEAuoluWhzre3c2/ew5NPlbW9IWvwCTXMM1YCmc7M9wpXMkYqt6kB9aO1sjZnmDzyugUu+2vQ==
+"@types/connect-redis@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@types/connect-redis/-/connect-redis-0.0.19.tgz#0895bbb1f2e3b5d2695158ec3f3ce367d1fca455"
+  integrity sha512-2312okmqA8MtogPkLmgwmM12VeSYH8gUAuRSzAtVz3PBoyEZwqt7Ri1lXBFtJmIVd3oXC/Hvg1KJSkt9x2ukKw==
   dependencies:
     "@types/express" "*"
     "@types/express-session" "*"
-    "@types/ioredis" "*"
+    "@types/ioredis" "^4.28.10"
     "@types/redis" "^2.8.0"
 
 "@types/connect@*":
@@ -1581,7 +1573,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/ioredis@*":
+"@types/ioredis@^4.28.10":
   version "4.28.10"
   resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.28.10.tgz#40ceb157a4141088d1394bb87c98ed09a75a06ff"
   integrity sha512-69LyhUgrXdgcNDv7ogs1qXZomnfOEnSmrmMFqKgt1XMJxmoOSG/u3wYy13yACIfKuMJ8IhKgHafDO3sx19zVQQ==
@@ -2369,7 +2361,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@0.27.2, axios@^0.27.2:
+axios@0.27.2:
   version "0.27.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
   integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
@@ -2383,6 +2375,15 @@ axios@^0.21.4:
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
+
+axios@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.1.3.tgz#8274250dada2edf53814ed7db644b9c2866c1e35"
+  integrity sha512-00tXVRwKx/FZr/IDVFt4C+f9FYairX517WoGCL6dpOntqLkZofjhu43F/Xl44UOpqa+9sLFDrG/XAnFsUYgkDA==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
 
 babel-jest@^29.2.2:
   version "29.2.2"
@@ -2671,15 +2672,15 @@ buffer@^5.5.0:
     base64-js "^1.3.1"
     ieee754 "^1.1.13"
 
-bull@4.5.1:
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/bull/-/bull-4.5.1.tgz#55a96837e95b0bde2ded835bcc3b2725b7f6367c"
-  integrity sha512-tF47nzpjAbrvI6ef0dGfQLPthoFPwxSoqBG4jwvSYs5XZ7RRHDHlspjMMl6HOgbx/c9oDWN2AFFyaGMKSn+5yQ==
+bull@4.10.1:
+  version "4.10.1"
+  resolved "https://registry.yarnpkg.com/bull/-/bull-4.10.1.tgz#f14974b6089358b62b495a2cbf838aadc098e43f"
+  integrity sha512-Fp21tRPb2EaZPVfmM+ONZKVz2RA+to+zGgaTLyCKt3JMSU8OOBqK8143OQrnGuGpsyE5G+9FevFAGhdZZfQP2g==
   dependencies:
     cron-parser "^4.2.1"
     debuglog "^1.0.0"
     get-port "^5.1.1"
-    ioredis "^4.27.0"
+    ioredis "^4.28.5"
     lodash "^4.17.21"
     msgpackr "^1.5.2"
     p-timeout "^3.2.0"
@@ -4106,7 +4107,7 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
-follow-redirects@^1.14.0, follow-redirects@^1.14.9:
+follow-redirects@^1.14.0, follow-redirects@^1.14.9, follow-redirects@^1.15.0:
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
@@ -4720,7 +4721,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-ioredis@^4.27.0:
+ioredis@^4.28.5:
   version "4.28.5"
   resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.28.5.tgz#5c149e6a8d76a7f8fa8a504ffc85b7d5b6797f9f"
   integrity sha512-3GYo0GJtLqgNXj4YhrisLaNNvWSNwSS2wS4OELGfGxH8I69+XfNdnmV1AyN+ZqMh0i7eX+SWjrwFKDBDgfBC1A==
@@ -6552,6 +6553,11 @@ proxy-addr@~2.0.7:
     forwarded "0.2.0"
     ipaddr.js "1.9.1"
 
+proxy-from-env@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
+
 psl@^1.1.28:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.9.0.tgz#d0df2a137f00794565fcaf3b2c00cd09f8d5a5a7"
@@ -7264,10 +7270,24 @@ steam-web@0.4.0:
   dependencies:
     qs "^6.1.0"
 
-steamcommunity@^3.33.1, steamcommunity@^3.44.2:
+steamcommunity@^3.33.1:
   version "3.44.2"
   resolved "https://registry.yarnpkg.com/steamcommunity/-/steamcommunity-3.44.2.tgz#18e514683b3508fa740d719f5f7351e6c426e08a"
   integrity sha512-plrl5TdWEJI/tkiK3u3mIzFap+1kkHWT/GmBrScN8TXdsFCdt7cyYTL3EFAp2KkFmQ5dZ0zzS3u+Ss6TyyYodw==
+  dependencies:
+    async "^2.6.3"
+    cheerio "0.22.0"
+    image-size "^0.8.2"
+    node-bignumber "^1.2.1"
+    request "^2.88.0"
+    steam-totp "^1.5.0"
+    steamid "^1.1.3"
+    xml2js "^0.4.22"
+
+steamcommunity@^3.44.3:
+  version "3.44.3"
+  resolved "https://registry.yarnpkg.com/steamcommunity/-/steamcommunity-3.44.3.tgz#7e266080c35b9e035604c55de518091d8fc00348"
+  integrity sha512-DU71oRMKUHYcOJWOOsVjSehSNbDjLTYLaHGZ8UwQ3YAL0c+kJ3A9Oe+fRilqpnV3KbtS4paulHBSg3UZ+eCHCQ==
   dependencies:
     async "^2.6.3"
     cheerio "0.22.0"

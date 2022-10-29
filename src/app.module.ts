@@ -29,7 +29,10 @@ import { ScheduleModule } from '@nestjs/schedule';
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        redis: configService.get('db.redisUrl'),
+        redis: {
+          host: configService.get('db.redisHost'),
+          port: configService.get('db.redisPort'),
+        },
         defaultJobOptions: {
           removeOnComplete: true,
         },
