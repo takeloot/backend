@@ -3,12 +3,13 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Job } from 'bull';
+import { INVENTORY_IMAGES_QUEUE } from './inventory.constants';
 import { InventoryService } from './inventory.service';
 
 const BUCKET_NAME = 'steam';
 const FILE_EXTENSION = 'png';
 
-@Processor('INVENTORY_IMAGES_QUEUE')
+@Processor(INVENTORY_IMAGES_QUEUE)
 export class InventoryProcessor {
   constructor(
     private readonly configService: ConfigService,
