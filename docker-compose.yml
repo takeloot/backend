@@ -21,6 +21,16 @@ services:
     volumes:
       - 'redisdata:/data'
 
+  bull:
+    container_name: 'bull'
+    image: 'deadly0/bull-board'
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
   minio:
     container_name: 'minio'
     image: 'bitnami/minio'
@@ -38,7 +48,7 @@ services:
   #   image: node:lts
   #   command: yarn start:dev
   #   ports:
-  #     - '127.0.0.1:3000:3000'
+  #     - '127.0.0.1:3333:3333'
   #   volumes:
   #     - .:/srv/api:rw
   #   working_dir: /srv/api

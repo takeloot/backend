@@ -46,6 +46,6 @@ async function bootstrap() {
   );
 
   await app.startAllMicroservices();
-  await app.listen(3000);
+  await app.listen(process.env.API_PORT || 3333);
 }
 bootstrap();
