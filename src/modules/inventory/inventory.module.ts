@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 import { MinioModule } from 'nestjs-minio-client';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
+import { INVENTORY_IMAGES_QUEUE } from './inventory.constants';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { BullModule } from '@nestjs/bull';
       },
     }),
     BullModule.registerQueue({
-      name: 'INVENTORY_IMAGES_QUEUE',
+      name: INVENTORY_IMAGES_QUEUE,
     }),
     PrismaModule,
     AuthModule,

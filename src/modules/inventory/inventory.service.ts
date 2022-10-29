@@ -5,6 +5,7 @@ import { Inventory } from './models/inventory.model';
 import { MinioService } from 'nestjs-minio-client';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { INVENTORY_IMAGES_QUEUE } from './inventory.constants';
 
 const community = new SteamCommunity();
 const steamImageUrl = 'https://steamcommunity-a.akamaihd.net/economy/image/';
@@ -14,7 +15,7 @@ export class InventoryService {
   constructor(
     private prisma: PrismaService,
     private readonly minioService: MinioService,
-    @InjectQueue('INVENTORY_IMAGES_QUEUE')
+    @InjectQueue(INVENTORY_IMAGES_QUEUE)
     private readonly inventoryQueue: Queue,
   ) {}
 
