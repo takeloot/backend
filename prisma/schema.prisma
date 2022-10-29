@@ -211,7 +211,7 @@ model SteamMarketItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   name      String   @unique
-  price     Int
+  price     Float
   gameId    Int
 }
 

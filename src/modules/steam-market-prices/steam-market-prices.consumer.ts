@@ -16,7 +16,7 @@ export class SteamMarketPricesConsumer {
   private NOT_SUCCESS_PAUSE_IN_MS = 4 * 1000;
   private PAUSE_AFTER_FETCH_IN_MS = 1 * 1000;
   private PAUSE_ON_TOO_MANY_REQUESTS_IN_MS = 8 * 1000;
-  private PAGE_SIZE = 100;
+  private PAGE_SIZE = 50;
 
   constructor(
     private steamMarketPricesService: SteamMarketPricesService,
@@ -27,7 +27,6 @@ export class SteamMarketPricesConsumer {
 
   @Process(UPDATE_PRICES_JOB)
   async updatePrices(job: Job<ISteamMarketUpdatePricesJob>) {
-    this.logger.debug('STARTED JOB', job.data);
     const { data } = job;
     const previousProgress = job.progress();
     let current = 0;

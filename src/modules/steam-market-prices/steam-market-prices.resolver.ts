@@ -26,7 +26,7 @@ export class SteamMarketPricesResolver {
     return await this.steamMarketPricesService.search(query);
   }
 
-  @Mutation(() => SteamMarketItem)
+  @Mutation(() => Boolean)
   async updatePrices(@Args('dto') dto: UpdatePricesInput) {
     return await this.steamMarketPricesService.addJob(dto);
   }

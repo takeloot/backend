@@ -323,7 +323,7 @@ export class SellService {
       }),
     );
 
-    this.logger.debug(err + 'sell check if accepted ');
+    this.logger.debug(err + ' sell check if accepted ');
     if (err) throw err;
 
     this.logger.debug(offer.itemsToReceive);

@@ -187,7 +187,7 @@ type Mutation {
   toggleWorkStatus(status: UpdateWorkStatusesInput!): WorkStatuses!
   createSell(dto: CreateSellInput!, userId: ID!): Sell!
   updatePrice(name: String!, dto: UpdatePriceInput!): SteamMarketItem!
-  updatePrices(dto: UpdatePricesInput!): SteamMarketItem!
+  updatePrices(dto: UpdatePricesInput!): Boolean!
 }
 
 input UpdateWorkStatusesInput {
