@@ -165,6 +165,14 @@ export class InventoryService {
       include: { skins: true },
     });
 
+    result.skins.forEach(async (skin) => {
+      await this.inventoryQueue.add('upload', {
+        name: `${skin.id}-${skin.assetId}`,
+        url: skin.steamImg,
+        skinId: skin.id,
+      });
+    });
+
     return result;
   }
 
