@@ -30,15 +30,15 @@ export class SteamMarketPricesService {
   }
 
   async save(items: SteamMarketItem[]) {
-    return await this.prisma.$transaction(
-      items.map((item) =>
-        this.prisma.steamMarketItem.upsert({
-          where: { name: item.name },
-          update: { ...item },
-          create: { ...item },
-        }),
-      ),
-    );
+    for (const item of items) {
+      await this.prisma.steamMarketItem.upsert({
+        where: { name: item.name },
+        update: { ...item },
+        create: { ...item },
+      });
+    }
+
+    return true;
   }
 
   async updatePriceByName(name: string, dto: UpdatePriceInput) {

@@ -13,10 +13,10 @@ import { Logger } from '@nestjs/common';
 
 @Processor(STEAM_MARKET_PRICES_QUEUE)
 export class SteamMarketPricesConsumer {
-  private NOT_SUCCESS_PAUSE_IN_MS = 4 * 1000;
-  private PAUSE_AFTER_FETCH_IN_MS = 1 * 1000;
-  private PAUSE_ON_TOO_MANY_REQUESTS_IN_MS = 8 * 1000;
-  private PAGE_SIZE = 50;
+  private NOT_SUCCESS_PAUSE_IN_MS = 5 * 1000;
+  private PAUSE_AFTER_FETCH_IN_MS = 2 * 1000;
+  private PAUSE_ON_TOO_MANY_REQUESTS_IN_MS = 9 * 1000;
+  private PAGE_SIZE = 100;
 
   constructor(
     private steamMarketPricesService: SteamMarketPricesService,
