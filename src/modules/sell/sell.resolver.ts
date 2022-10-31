@@ -50,8 +50,11 @@ export class SellResolver {
     });
   }
 
-  @Subscription(() => Sell)
-  sellStatusChanged() {
+  @Subscription(() => Sell, {
+    filter: ({ sellStatusChanged }, { sellId }) =>
+      sellStatusChanged.id === sellId,
+  })
+  sellStatusChanged(@Args({ name: 'sellId', type: () => ID }) sellId: string) {
     return this.pubsub.asyncIterator('sellStatusChanged');
   }
 }
