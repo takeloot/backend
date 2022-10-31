@@ -5,6 +5,7 @@ import {
   ID,
   Subscription,
   Context,
+  Query,
 } from '@nestjs/graphql';
 import { SellService } from './sell.service';
 import { Sell } from './models/sell.model';
@@ -22,11 +23,13 @@ export class SellResolver {
   ) {}
 
   @UseGuards(AuthGuard)
+  @Query(() => Sell, { nullable: true })
   async getSell(@Args('id') id: string) {
     return this.sellService.getSell(id);
   }
 
   @UseGuards(AuthGuard)
+  @Query(() => Sell, { nullable: true })
   async getUserActiveSell(@Context('userId') userId) {
     return this.sellService.getUserActiveSell({ userId });
   }
