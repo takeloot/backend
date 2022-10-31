@@ -1,4 +1,11 @@
-import { Resolver, Args, Mutation, ID, Subscription } from '@nestjs/graphql';
+import {
+  Resolver,
+  Args,
+  Mutation,
+  ID,
+  Subscription,
+  Context,
+} from '@nestjs/graphql';
 import { SellService } from './sell.service';
 import { Sell } from './models/sell.model';
 import { Inject, Ip, UseGuards } from '@nestjs/common';
@@ -15,11 +22,20 @@ export class SellResolver {
   ) {}
 
   @UseGuards(AuthGuard)
+  async getSell(@Args('id') id: string) {
+    return this.sellService.getSell(id);
+  }
+
+  @UseGuards(AuthGuard)
+  async getUserActiveSell(@Context('userId') userId) {
+    return this.sellService.getUserActiveSell({ userId });
+  }
+
+  @UseGuards(AuthGuard)
   @Mutation(() => Sell)
   async createSell(
     @Args('dto') dto: CreateSellInput,
-    @Args({ name: 'userId', type: () => ID })
-    userId: string,
+    @Context('userId') userId,
     @Ip() ip: string,
     // @UserAgent() userAgent: string,
   ) {

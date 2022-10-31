@@ -286,6 +286,14 @@ export class SellService {
     });
   }
 
+  async getSell(id: string) {
+    return await this.prisma.sell.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   async getUserActiveSell({ userId }) {
     return await this.prisma.sell.findFirst({
       where: {

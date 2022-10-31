@@ -186,7 +186,7 @@ type Mutation {
   updateConnectionStatus: Boolean!
   updateMyTradeUrl(tradeUrl: String): Boolean!
   toggleWorkStatus(status: UpdateWorkStatusesInput!): WorkStatuses!
-  createSell(dto: CreateSellInput!, userId: ID!): Sell!
+  createSell(dto: CreateSellInput!): Sell!
   updatePrice(name: String!, dto: UpdatePriceInput!): SteamMarketItem!
   updatePrices(dto: UpdatePricesInput!): Boolean!
 }
