@@ -146,6 +146,7 @@ type Sell {
   userAgent: String!
   steamBot: SteamBotModel!
   status: ESellStatus!
+  tradeId: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
