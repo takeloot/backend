@@ -60,8 +60,8 @@ export class Sell {
   })
   status: ESellStatus;
 
-  @Field(() => String, { nullable: true })
-  tradeId?: string;
+  @Field(() => String)
+  tradeId: string;
 
   @Field()
   createdAt: Date;

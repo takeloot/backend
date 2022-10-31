@@ -171,6 +171,8 @@ type Query {
   steamBot(id: ID!): SteamBotModel
   steamBots: [SteamBotModel!]!
   workStatuses: WorkStatuses!
+  getSell(id: String!): Sell
+  getUserActiveSell: Sell
   searchByPrice(query: SearchQueryInput!): SteamMarketItem!
 }
 
