@@ -225,4 +225,5 @@ input UpdatePricesInput {
 
 type Subscription {
   workStatusesUpdated: WorkStatuses!
+  sellStatusChanged: Sell!
 }
