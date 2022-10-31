@@ -1,14 +1,18 @@
-import { Resolver, Args, Mutation, ID } from '@nestjs/graphql';
+import { Resolver, Args, Mutation, ID, Subscription } from '@nestjs/graphql';
 import { SellService } from './sell.service';
 import { Sell } from './models/sell.model';
-import { Ip, UseGuards } from '@nestjs/common';
+import { Inject, Ip, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/guards';
 import { CreateSellInput } from './dto/create-sell.input';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 // import { UserAgent } from 'src/common';
 
 @Resolver(() => Sell)
 export class SellResolver {
-  constructor(private readonly sellService: SellService) {}
+  constructor(
+    private readonly sellService: SellService,
+    @Inject('PUB_SUB') private readonly pubsub: RedisPubSub,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Mutation(() => Sell)
@@ -25,5 +29,10 @@ export class SellResolver {
       ip,
       // userAgent
     });
+  }
+
+  @Subscription(() => Sell)
+  sellStatusChanged() {
+    return this.pubsub.asyncIterator('sellStatusChanged');
   }
 }

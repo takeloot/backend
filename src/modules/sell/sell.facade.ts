@@ -1,6 +1,6 @@
 import { User } from './../user/models/user.model';
 import { SteamBotModel } from './../steam-bot/models/steam-bot.model';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SellStatus } from '@prisma/client';
 import { of } from 'await-of';
 import { SteamBotService } from '../steam-bot/steam-bot.service';
@@ -9,6 +9,7 @@ import { SellService } from './sell.service';
 import { ISteamEconItem } from '../steam-bot/steam-bot.interfaces';
 import { InventoryService } from '../inventory/inventory.service';
 import { DateUtil, TimePeriod } from 'src/common/classes/date-util';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 @Injectable()
 export class SellFacade {
@@ -17,6 +18,7 @@ export class SellFacade {
     private steamBotService: SteamBotService,
     private logger: Logger,
     private inventoryService: InventoryService,
+    @Inject('PUB_SUB') private readonly pubsub: RedisPubSub,
   ) {}
 
   async accept(id: string) {
@@ -25,11 +27,9 @@ export class SellFacade {
     try {
       const sell = await this.sellService.acceptSell(id);
 
-      // TODO: add subscription
-      // sellStatusChanged(sell.user.id.toString(), {
-      //   id: sell.id,
-      //   status: SellStatus.ACCEPTED_BY_SUPPORT,
-      // });
+      this.pubsub.publish('sellStatusChanged', {
+        sellStatusChanged: sell,
+      });
 
       await this.sellService.addExecuteTradeStageJob({ sellId: id });
     } catch (e) {
@@ -109,10 +109,16 @@ export class SellFacade {
     //   acceptTradeUntil,
     // });
 
-    await this.sellService.addRepeatableMoveToPayoutStageJob(
-      { sellId: id },
-      60_000,
-    );
+    const sell = await this.sellService.getById(id);
+
+    this.pubsub.publish('sellStatusChanged', {
+      sellStatusChanged: sell,
+    });
+
+    // await this.sellService.addRepeatableMoveToPayoutStageJob(
+    //   { sellId: id },
+    //   60_000,
+    // );
   }
 
   async moveToPayoutStage(sellId: string) {
@@ -141,6 +147,10 @@ export class SellFacade {
         //   id: sellId,
         //   status: SellStatus.TRADE_DECLINED_BY_USER,
         // });
+
+        this.pubsub.publish('sellStatusChanged', {
+          sellStatusChanged: sell,
+        });
       }
 
       return;
@@ -167,6 +177,10 @@ export class SellFacade {
       //   status: SellStatus.TRADE_ACCEPTED_BY_USER,
       // });
 
+      this.pubsub.publish('sellStatusChanged', {
+        sellStatusChanged: sell,
+      });
+
       const isAllItemsReceived = await this.sellService.checkIfAllItemsReceived(
         sellId,
       );
@@ -189,6 +203,10 @@ export class SellFacade {
       //   status: SellStatus.PAY_REQUEST_TO_MERCHANT,
       // });
 
+      this.pubsub.publish('sellStatusChanged', {
+        sellStatusChanged: sell,
+      });
+
       return await this.sellService.addExecutePayoutStageJob({ sellId });
     }
 
@@ -206,6 +224,10 @@ export class SellFacade {
         //   id: sell.id,
         //   status: SellStatus.TRADE_TIMEOUT_EXCEEDED,
         // });
+
+        this.pubsub.publish('sellStatusChanged', {
+          sellStatusChanged: sell,
+        });
 
         await this.sellService.removeJob(
           ['delayed'],
@@ -231,5 +253,11 @@ export class SellFacade {
     //   status: SellStatus.FAILED,
     //   error: err.constructor.name,
     // });
+
+    const sell = await this.sellService.getById(id);
+
+    this.pubsub.publish('sellStatusChanged', {
+      sellStatusChanged: sell,
+    });
   }
 }
