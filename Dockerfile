@@ -2,10 +2,15 @@ FROM node:lts-alpine as base
 WORKDIR /app
 
 COPY dist/ .
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 COPY prisma/migrations ./migrations
 COPY prisma/schema.prisma ./schema.prisma
 COPY prisma/seed.ts ./seed.ts
 COPY schema.gql ./schema.gql
+
+FROM base as dependencies
+RUN yarn global add pnpm 
+RUN pnpm i --prod
 
 FROM dependencies as prisma
 RUN pnpm add prisma --save-dev
