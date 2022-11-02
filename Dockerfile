@@ -10,7 +10,7 @@ COPY schema.gql ./schema.gql
 
 FROM base as dependencies
 RUN yarn global add pnpm 
-RUN pnpm i --prod
+RUN pnpm i --prod --ignore-scripts
 
 FROM dependencies as prisma
 RUN pnpm add prisma --save-dev
