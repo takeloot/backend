@@ -8,6 +8,7 @@ COPY prisma/seed.ts ./seed.ts
 COPY schema.gql ./schema.gql
 
 FROM base as dependencies
+RUN yarn global add pnpm
 RUN pnpm --save-prod
 
 FROM dependencies as prisma
