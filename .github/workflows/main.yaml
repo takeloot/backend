@@ -44,7 +44,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pnpm i
+        run: yarn global add pnpm && pnpm i
 
       - name: Build apps
         working-directory: ./
