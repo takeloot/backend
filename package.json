@@ -10,9 +10,9 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "dotenv -e .env.development nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "dev": "dotenv -e .env.development nest start --watch",
+    "debug": "nest start --debug --watch",
+    "prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -20,14 +20,14 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
+    "preinstall": "npx only-allow pnpm",
     "commit": "cz",
     "commit:signed": "cz -S",
-    "udeps": "yarn upgrade-interactive --latest",
     "migrate:dev": "dotenv -e .env.development prisma format && dotenv -e .env.development prisma migrate dev && dotenv -e .env.development prisma generate && dotenv -e .env.development prisma db seed",
     "migrate:staging": "dotenv -e .env.staging prisma format && dotenv -e .env.staging prisma migrate dev && dotenv -e .env.staging prisma generate",
     "studio:dev": "dotenv -e .env.development prisma studio",
-    "buildx": "sh ./buildx.sh",
-    "seed:dev": "dotenv -e .env.development prisma db seed"
+    "seed:dev": "dotenv -e .env.development prisma db seed",
+    "buildx": "sh ./buildx.sh"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
