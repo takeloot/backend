@@ -13,8 +13,7 @@ RUN yarn global add pnpm
 RUN pnpm i --prod --ignore-scripts
 
 FROM dependencies as prisma
-RUN pnpm add prisma --save-dev
-RUN pnpm prisma generate
+RUN pnpx prisma generate
 COPY . .
 
 FROM prisma as release
