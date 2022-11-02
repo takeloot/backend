@@ -8,11 +8,11 @@ COPY prisma/seed.ts ./seed.ts
 COPY schema.gql ./schema.gql
 
 FROM base as dependencies
-RUN yarn --production
+RUN pnpm --save-prod
 
 FROM dependencies as prisma
-RUN yarn add prisma --dev
-RUN yarn prisma generate
+RUN pnpm add prisma --save-dev
+RUN pnpm prisma generate
 COPY . .
 
 FROM prisma as release
