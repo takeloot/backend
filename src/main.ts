@@ -36,7 +36,7 @@ async function bootstrap() {
           reconnectOnError: (err) => {
             return err.message.startsWith('READONLY');
           },
-        }),
+        }) as any,
       }),
       secret: config.get('auth.sessionSecret'),
       name: 'appsessions',
