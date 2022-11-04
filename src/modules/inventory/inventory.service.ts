@@ -40,6 +40,20 @@ export class InventoryService {
     });
   }
 
+  async getSteamMarketPrice(marketName: string) {
+    const steamMarketItem = await this.prisma.steamMarketItem.findFirst({
+      where: {
+        name: marketName,
+      },
+    });
+
+    if (!steamMarketItem) {
+      return 0;
+    }
+
+    return steamMarketItem.price;
+  }
+
   async fillInventoryWithSkins({
     appId,
     steamId,
@@ -80,6 +94,7 @@ export class InventoryService {
         steamId: steamSkin.id,
         steamImg: steamSkinImageUrl,
         steamName: steamSkin.market_name,
+        defaultPrice: await this.getSteamMarketPrice(steamSkin.market_name),
       };
 
       result.push(skin);
@@ -96,7 +111,7 @@ export class InventoryService {
     const now = +new Date();
     const inventoryLastUpdatedMs = Math.abs(now - inventoryUpdatedAtMs);
     const ONE_MINUTE_MS = 60000;
-    const REFETCH_LIMIT_MINUTES = 1;
+    const REFETCH_LIMIT_MINUTES = 5;
     const refetchLimitMs = REFETCH_LIMIT_MINUTES * ONE_MINUTE_MS;
 
     return inventoryLastUpdatedMs > refetchLimitMs;
