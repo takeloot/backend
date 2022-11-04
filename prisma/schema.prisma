@@ -82,11 +82,11 @@ model Skin {
   quality       String?
   rarity        String?
   rarityColor   String?
-  botPrice      Int?
-  defaultPrice  Int?
-  lowestPrice   Int?
-  price         Int?
-  rubPrice      Int?
+  botPrice      Float?
+  defaultPrice  Float?
+  lowestPrice   Float?
+  price         Float?
+  rubPrice      Float?
   overstockDiff Int?
   hasHighDemand Boolean?
   isUnsellable  Boolean?
