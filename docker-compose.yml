@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+  postgres:
+    restart: unless-stopped
+    container_name: 'postgres'
+    image: 'postgres:15'
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - 'postgresdata:/var/lib/postgresql/data/'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: takeloot
+  redis:
+    container_name: 'redis'
+    image: 'redis'
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - 'redisdata:/data'
+
+  bull:
+    container_name: 'bull'
+    image: 'deadly0/bull-board'
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+  minio:
+    container_name: 'minio'
+    image: 'bitnami/minio'
+    ports:
+      - '127.0.0.1:9000:9000'
+      - '127.0.0.1:9001:9001'
+    volumes:
+      - 'miniodata:/data'
+    environment:
+      MINIO_ROOT_USER: minio-root-user
+      MINIO_ROOT_PASSWORD: minio-root-password
+
+  # api:
+  #   container_name: 'api'
+  #   image: node:lts
+  #   command: yarn start:dev
+  #   ports:
+  #     - '127.0.0.1:3333:3333'
+  #   volumes:
+  #     - .:/srv/api:rw
+  #   working_dir: /srv/api
+  #   env_file:
+  #     - .env.development
+  #   depends_on:
+  #     - postgres
+  #     - redis
+
+volumes:
+  postgresdata: {}
+  redisdata: {}
+  miniodata: {}

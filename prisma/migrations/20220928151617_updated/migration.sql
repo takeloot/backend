@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Skin" ALTER COLUMN "assetId" SET DATA TYPE TEXT;

@@ -1,0 +1,232 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SteamMarketItem {
+  name: String!
+  price: Float!
+  gameId: EGame!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum EGame {
+  DOTA2
+  CSGO
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Profile {
+  id: String!
+  name: String
+  avatar: String
+  provider: String!
+  serviceId: String!
+}
+
+type User {
+  id: String!
+  name: String
+  role: UserRole!
+  avatar: String
+  tradeUrl: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  profiles: [Profile!]
+}
+
+enum UserRole {
+  CREATOR
+  ADMIN
+  SUPPORT
+  USER
+}
+
+type Case {
+  id: String!
+  img: String!
+  name: String!
+}
+
+type Collection {
+  id: String!
+  img: String!
+  name: String!
+}
+
+type Sticker {
+  id: String!
+  img: String!
+  name: String!
+}
+
+type Skin {
+  id: String!
+  appId: Float!
+  assetId: String!
+  name: String
+  img: String
+  preview: String
+  screenshot: String
+  inspect: String
+  float: Float
+  floatMin: Float
+  floatMax: Float
+  pattern: Float
+  quality: String
+  rarity: String
+  rarityColor: String
+  botPrice: Float
+  defaultPrice: Float
+  lowestPrice: Float
+  price: Float
+  rubPrice: Float
+  overstockDiff: Float
+  hasHighDemand: Boolean
+  isUnsellable: Boolean
+  model3d: String
+  collection: [Collection!]
+  case: [Case!]
+  stickers: [Sticker!]
+  fullName: String
+  hasScreenshot: Boolean!
+  isStatTrak: Boolean
+  isBlacklisted: Boolean!
+  steamId: String!
+  steamName: String!
+  steamImg: String!
+}
+
+type Inventory {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  skins: [Skin!]
+}
+
+type SteamBotModel {
+  id: String!
+  avatar: String
+  name: String!
+  profileUrl: String!
+  tradeUrl: String
+  isDeactivated: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type WorkStatuses {
+  id: String!
+  isDepositEnabled: Boolean!
+  isWithdrawalEnabled: Boolean!
+  isSellEnabled: Boolean!
+  isMaintenance: Boolean!
+  isSteamProblems: Boolean!
+  isFuckup: Boolean!
+  isQiwiEnabled: Boolean!
+  isTinkoffEnabled: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Sell {
+  id: String!
+  totalItemsPrice: Float!
+  paymentProvider: String!
+  wallet: String!
+  email: String!
+  items: [Skin!]!
+  givenItem: String
+  user: User!
+  ip: String!
+  userAgent: String!
+  steamBot: SteamBotModel!
+  status: ESellStatus!
+  tradeId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum ESellStatus {
+  WAITING_SUPPORT_ACCEPT
+  ACCEPTED_BY_SUPPORT
+  WAITING_USER_TRADE_CONFIRMATION
+  TRADE_ACCEPTED_BY_USER
+  TRADE_TIMEOUT_EXCEEDED
+  PAY_REQUEST_TO_MERCHANT
+  PAY_ACCEPTED_BY_MERCHANT
+  COMPLETED
+  FAILED
+}
+
+type Query {
+  users: [User!]!
+  user(id: ID): User
+  me: User!
+  userInventory(appId: Int!, userId: ID!): Inventory
+  myInventory(appId: Int!): Inventory
+  steamBot(id: ID!): SteamBotModel
+  steamBots: [SteamBotModel!]!
+  workStatuses: WorkStatuses!
+  getSell(id: String!): Sell
+  getUserActiveSell: Sell
+  searchByPrice(query: SearchQueryInput!): SteamMarketItem!
+}
+
+input SearchQueryInput {
+  name: String!
+  price: Float!
+  compare: String!
+  limit: Float = 1
+}
+
+type Mutation {
+  logout: Boolean!
+  updateConnectionStatus: Boolean!
+  updateMyTradeUrl(tradeUrl: String): Boolean!
+  toggleWorkStatus(status: UpdateWorkStatusesInput!): WorkStatuses!
+  createSell(dto: CreateSellInput!): Sell!
+  updatePrice(name: String!, dto: UpdatePriceInput!): SteamMarketItem!
+  updatePrices(dto: UpdatePricesInput!): Boolean!
+}
+
+input UpdateWorkStatusesInput {
+  name: EStatus!
+}
+
+enum EStatus {
+  IS_DEPOSIT_ENABLED
+  IS_WITHDRAWAL_ENABLED
+  IS_SELL_ENABLED
+  IS_MAINTENANCE
+  IS_STEAM_PROBLEMS
+  IS_FUCKUP
+  IS_QIWI_ENABLED
+  IS_TINKOFF_ENABLED
+}
+
+input CreateSellInput {
+  items: [Item!]!
+}
+
+input Item {
+  id: String!
+  price: Float!
+}
+
+input UpdatePriceInput {
+  price: Float!
+}
+
+input UpdatePricesInput {
+  game: EGame!
+}
+
+type Subscription {
+  workStatusesUpdated: WorkStatuses!
+  sellStatusChanged(id: ID!): Sell!
+}
