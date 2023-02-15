@@ -1,0 +1,237 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "linux-arm64-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Token {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Connection {
+  id         String   @id @default(cuid())
+  instanceId String?
+  ipHash     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  user       User?    @relation(fields: [userId], references: [id])
+  userId     String?
+}
+
+model User {
+  id                  String       @id @default(cuid())
+  name                String?
+  avatar              String?
+  tradeUrl            String?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @default(now()) @updatedAt
+  role                UserRole     @default(USER)
+  profiles            Profile[]
+  tokens              Token[]
+  connection          Connection[]
+  inventory           Inventory[]
+  isDepositEnabled    Boolean      @default(true)
+  isWithdrawalEnabled Boolean      @default(true)
+  isSellEnabled       Boolean      @default(true)
+  ban                 Ban[]
+  sells               Sell[]
+}
+
+model Profile {
+  id           String  @id @default(cuid())
+  provider     String
+  serviceId    String  @unique
+  name         String?
+  avatar       String?
+  email        String? @unique
+  accessToken  String?
+  refreshToken String?
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model Skin {
+  id            String       @id @default(cuid())
+  appId         Int
+  assetId       String
+  steamId       String       @unique
+  steamImg      String
+  steamName     String
+  name          String?
+  fullName      String?
+  img           String?
+  preview       String?
+  hasScreenshot Boolean      @default(false)
+  screenshot    String?
+  inspect       String?
+  float         Int?
+  floatMin      Int?
+  floatMax      Int?
+  pattern       Int?
+  quality       String?
+  rarity        String?
+  rarityColor   String?
+  botPrice      Float?
+  defaultPrice  Float?
+  lowestPrice   Float?
+  price         Float?
+  rubPrice      Float?
+  overstockDiff Int?
+  hasHighDemand Boolean?
+  isUnsellable  Boolean?
+  isStatTrak    Boolean?
+  model3d       String?
+  collection    Collection[]
+  case          Case[]
+  stickers      Sticker[]
+  isBlacklisted Boolean      @default(false)
+  inventory     Inventory?   @relation(fields: [inventoryId], references: [id])
+  inventoryId   String?
+  sell          Sell?        @relation(fields: [sellId], references: [id])
+  sellId        String?
+}
+
+model Inventory {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  skins     Skin[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+}
+
+model Case {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  img       String
+  name      String
+  skin      Skin?    @relation(fields: [skinId], references: [id])
+  skinId    String?
+}
+
+model Collection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  img       String
+  name      String
+  skin      Skin?    @relation(fields: [skinId], references: [id])
+  skinId    String?
+}
+
+model Sticker {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  img       String
+  name      String
+  skin      Skin?    @relation(fields: [skinId], references: [id])
+  skinId    String?
+}
+
+model SteamBot {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  accountName    String   @unique
+  password       String
+  proxy          String?
+  sharedSecret   String
+  identitySecret String
+  avatar         String?
+  name           String
+  profileUrl     String
+  tradeUrl       String?
+  cookies        String[]
+  isDeactivated  Boolean  @default(false)
+  sell           Sell?
+}
+
+model Ban {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  reason      String
+  amnestyDate DateTime?
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model WorkStatuses {
+  id                  String   @id @default(cuid())
+  pk                  Int      @unique @default(autoincrement())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now()) @updatedAt
+  isDepositEnabled    Boolean  @default(false)
+  isWithdrawalEnabled Boolean  @default(false)
+  isSellEnabled       Boolean  @default(false)
+  isMaintenance       Boolean  @default(false)
+  isSteamProblems     Boolean  @default(false)
+  isFuckup            Boolean  @default(false)
+  isQiwiEnabled       Boolean  @default(false)
+  isTinkoffEnabled    Boolean  @default(false)
+}
+
+model Sell {
+  id               String     @id @default(cuid())
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @default(now()) @updatedAt
+  totalItemsPrice  Int
+  paymentProvider  String
+  wallet           String
+  email            String
+  items            Skin[]
+  givenItem        Json?
+  user             User       @relation(fields: [userId], references: [id])
+  userId           String
+  ip               String
+  userAgent        String
+  steamBot         SteamBot?  @relation(fields: [steamBotId], references: [id])
+  steamBotId       String?    @unique
+  status           SellStatus @default(WAITING_SUPPORT_ACCEPT)
+  acceptTradeUntil DateTime?
+  error            String?
+  tradeId          String?
+}
+
+model SteamMarketItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  name      String   @unique
+  price     Float
+  gameId    Int
+}
+
+enum SellStatus {
+  WAITING_SUPPORT_ACCEPT
+  ACCEPTED_BY_SUPPORT
+  WAITING_USER_TRADE_CONFIRMATION
+  TRADE_ACCEPTED_BY_USER
+  TRADE_DECLINED_BY_USER
+  TRADE_TIMEOUT_EXCEEDED
+  PAY_REQUEST_TO_MERCHANT
+  PAY_ACCEPTED_BY_MERCHANT
+  PAY_DECLINED_BY_MERCHANT
+  COMPLETED
+  FAILED
+}
+
+enum UserRole {
+  CREATOR
+  ADMIN
+  SUPPORT
+  USER
+}
